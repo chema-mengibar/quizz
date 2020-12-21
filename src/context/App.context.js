@@ -3,7 +3,8 @@ import React from 'react'
 const AppContext = React.createContext()
 
 let initialState = {
-  hash: Math.floor(Date.now() / 1000)
+  hash: Math.floor(Date.now() / 1000),
+  gameIdx: 0,
 };
 
 let reducer = (state, action) => {

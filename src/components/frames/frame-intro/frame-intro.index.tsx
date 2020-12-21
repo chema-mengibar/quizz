@@ -5,25 +5,25 @@ import CoreService from '~/services/CoreService/CoreService'
 import Logo  from '~/components/ci/logo'
 
 import {
-  IntroStyled
-} from "./intro.styles";
+  FrameIntroStyled
+} from "./frame-intro.styles";
 
 
-const Intro = (): ReactElement => {
+const FrameIntro = (): ReactElement => {
   
   const [loaded, setLoaded] = useState(false);
 
   const {t} = CoreService
 
   return (
-    <IntroStyled>
+    <FrameIntroStyled>
       <Logo />
       { loaded && <Redirect to="/menu" />  }
 
       {t('dummy')}
-    </IntroStyled>
+    </FrameIntroStyled>
   )
  };
 
-export default Intro
+export default FrameIntro
 
