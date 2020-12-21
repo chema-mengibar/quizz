@@ -1,0 +1,98 @@
+{
+  "name": "Quizz",
+  "version": "0.1.0",
+  "description": "A Buzzer game for the browser",
+  "dependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@types/react": "^16.9.11",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/styled-components": "^4.4.0",
+    "@types/styled-theming": "^2.2.4",
+    "babel-loader": "^8.0.6",
+    "cors": "^2.8.5",
+    "dotenv-expand": "^5.1.0",
+    "enzyme": "^3.10.0",
+    "express": "^4.17.1",
+    "html-replace-webpack-plugin": "^2.5.6",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.9.0",
+    "npm": "^7.3.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-hot-loader": "^4.12.15",
+    "react-router-dom": "^5.1.2",
+    "styled-components": "^4.4.0",
+    "styled-theming": "^2.2.0",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.6.4",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "optionalDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "dotenv": "6.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-react-app": "^5.0.2",
+    "eslint-loader": "3.0.2",
+    "eslint-plugin-flowtype": "3.13.0",
+    "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.14.3",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "jest": "24.9.0",
+    "jest-environment-jsdom-fourteen": "0.1.0",
+    "jest-resolve": "24.9.0",
+    "jest-watch-typeahead": "0.4.0",
+    "react-app-polyfill": "^1.0.4",
+    "resolve": "1.12.0",
+    "resolve-url-loader": "3.1.0",
+    "semver": "6.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chema-mengibar/quizz.git"
+  },
+  "keywords": [
+    "quizz",
+    "game",
+    "react"
+  ],
+  "scripts": {
+    "dev": "cross-env NODE_PATH=. NODE_ENV=development gulp dev --mode development ",
+    "build": "cross-env NODE_PATH=. NODE_ENV=production webpack --config webpack.config.js",
+    "test": "cross-env NODE_PATH=. jest --config ./jest.config.js",
+    "test:watch": "cross-env NODE_PATH=. jest --config ./jest.config.js --watch",
+    "storybook": "cross-env NODE_PATH=. start-storybook -s ./public,/static --ci --port 3001 -- ",
+    "fluorescent": "npm run --prefix .fluorescent serve",
+    "plop": "plop"
+  },
+  "remove_scripts": {
+    "wp:start": "webpack-dev-server --mode development --config webpack.config.js",
+    "gulp:dev": "cross-env NODE_ENV=development gulp dev",
+    "gulp:build": "gulp build",
+    "wp:build": "cross-env NODE_ENV=production webpack"
+  },
+  "author": "chema-mengibar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chema-mengibar/quizz/issues"
+  },
+  "homepage": "https://github.com/chema-mengibar/quizz#readme",
+  "devDependencies": {
+    "@storybook/react": "^5.2.5",
+    "@types/jest": "^24.0.23",
+    "babel-plugin-styled-components": "^1.10.7",
+    "browser-sync": "^2.26.7",
+    "connect-history-api-fallback": "^1.6.0",
+    "cross-env": "^7.0.0",
+    "gulp": "^4.0.2",
+    "ts-jest": "^26.4.4",
+    "webpack": "^4.41.5",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-stream": "^5.2.1"
+  }
+}
