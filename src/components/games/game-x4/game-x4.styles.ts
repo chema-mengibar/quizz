@@ -1,68 +1,44 @@
 import styled, { css } from "styled-components";
-import theme from 'styled-theming';
 
+// import media from '~/utils/media/media.index';
 import bl from '~/styles/shared/baseline.styles';
 
 
-// Roboto
-
-
-export const LayoutBaseStyled = styled.div`
-  display:flex;
-  width:100%;
-  height:100%;
-  background: rgb(72,50,150);
-  background: linear-gradient(214deg, rgba(72,50,150,1) 0%, rgba(17,8,51,1) 34%, rgba(17,8,51,1) 65%, rgba(48,29,117,1) 94%, rgba(70,44,165,1) 100%); 
-`
-
-export const FrameStyled = styled.div`
-  display:flex;
-  width:100%;
-  height:100%;
-`
-
-export const MediumWrapperStyled = styled.div`
-  width: 100%;
-  max-width:920px;
-  margin: 0 auto;
-  height: 100%;
-`
-
-export const Qx4ContainerStyled = styled.div`
+export const GX4ContainerStyled = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
 `
 
-export const Qx4HeaderContainerStyled = styled.div`
+export const GX4HeaderContainerStyled = styled.div`
   height: ${bl._m6};
 `
 
-export const Qx4BodyContainerStyled = styled.div`
+export const GX4BodyContainerStyled = styled.div`
   min-height:200px;
   flex:1;
   width:100%;
   position:relative;
 `
 
-export const Qx4FootersContainerStyled = styled.div`
+export const GX4FootersContainerStyled = styled.div`
   width:100%;
   height: ${bl._m8};
 `
 
-export const Qx4AnwersContainerStyled = styled.div`
+export const GX4AnwersContainerStyled = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   padding ${bl._} 0;
 `
 
-export const Qx4TimerColumnStyled = styled.div`
+export const GX4TimerColumnStyled = styled.div`
   display:flex;
   align-items: center;
 `
 
-export const Qx4TimerStyled = styled.div`
+export const GX4TimerStyled = styled.div`
   height: 70px;
   width: 70px;
   border: 2px solid white;
@@ -75,7 +51,7 @@ export const Qx4TimerStyled = styled.div`
   position:relative;
 `
 
-export const Qx4TimerCounterStyled = styled.div`
+export const GX4TimerCounterStyled = styled.div`
   position: absolute;
   height: 70px;
   width: 70px;
@@ -85,7 +61,7 @@ export const Qx4TimerCounterStyled = styled.div`
   left: 0px;
 `
 
-export const Qx4AnswerStyled = styled.div`
+export const GX4AnswerStyled = styled.div`
   border-radius: 28px;
   border: 1px solid white;
   line-height: ${bl._m2};
@@ -99,7 +75,7 @@ export const Qx4AnswerStyled = styled.div`
   width: 400px;
 `
 
-export const Qx4AnswerKeyStyled = styled.div`
+export const GX4AnswerKeyStyled = styled.div`
   color: orange;
   margin-right: 10px;
   &:after{
@@ -108,13 +84,13 @@ export const Qx4AnswerKeyStyled = styled.div`
   }
 `
 
-export const Qx4AnwerColumnStyled = styled.div`
-  ${Qx4AnswerStyled}:not(:last-child){
+export const GX4AnwerColumnStyled = styled.div`
+  ${GX4AnswerStyled}:not(:last-child){
     margin-bottom: ${bl._};
   }
 `
 
-export const Qx4QuestionStyled = styled.div`
+export const GX4QuestionStyled = styled.div`
   display:flex;
   height: 100%;
   align-items: center;
@@ -128,7 +104,7 @@ export const CopyQestionStyled = styled.div`
   line-height:32px;
 `
 
-export const Qx4QuestionMonitorStyled = styled.div`
+export const GX4QuestionMonitorStyled = styled.div`
   border: 1px solid white;
   height: 100%;
   width:100%;
@@ -166,7 +142,7 @@ export const Qx4QuestionMonitorStyled = styled.div`
   }
 `
 
-export const Qx4QuestionImageStyled = styled.div`
+export const GX4QuestionImageStyled = styled.div`
   width: 400px;
   height: 90%;
   background-size: cover;

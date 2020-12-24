@@ -1,5 +1,5 @@
 
-module.exports = {
+export default {
   "_m10": "240px",
   "_m8": "192px",
   "_m6": "144px",

@@ -30,7 +30,8 @@ module.exports = function (plop) {
           { name: 'layout', value: 'layout' },
           { name: 'ui', value: 'ui' },
           { name: 'visual', value: 'visual' },
-          { name: 'frames', value: 'frames' }
+          { name: 'frames', value: 'frames' },
+          { name: 'games', value: 'games' }
         
         ],
       },

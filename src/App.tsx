@@ -10,17 +10,14 @@ import { hot } from 'react-hot-loader';
 import CoreService from '~/services/CoreService/CoreService'
 import { useThemeContext, ThemeProps } from '~/context/Theme.context';
 
-import FrameIntro from '~/components/frames/frame-intro/frame-intro.index';
 import {
   LayoutBaseStyled,
-  FrameStyled,
-  MediumWrapperStyled,
-  Qx4ContainerStyled,
-  Qx4HeaderContainerStyled,
-  Qx4BodyContainerStyled,
-  Qx4FootersContainerStyled,
-  Qx4QuestionStyled,
-  CopyQestionStyled
+} from '~/components/layout/layout.index'
+
+import FrameIntro from '~/components/frames/frame-intro/frame-intro.index';
+import FrameGame from '~/components/frames/frame-game/frame-game.index';
+
+import {
 
 } from '~/components/sandbox/layout-all.styles';
 
@@ -41,35 +38,8 @@ function App() {
     <ThemeProvider theme={themeProps}>
       <Router basename={`${SUBDIR}`} >
         <LayoutBaseStyled>
-          <FrameStyled>
-
-            <Qx4ContainerStyled>
-
-              <Qx4HeaderContainerStyled>
-                <MediumWrapperStyled>
-                  <Qx4QuestionStyled>
-                    <CopyQestionStyled>Cual es el nombre del personaje?</CopyQestionStyled>
-                  </Qx4QuestionStyled>
-                  
-                </MediumWrapperStyled>
-              </Qx4HeaderContainerStyled>
-
-              <Qx4BodyContainerStyled>
-                <div>
-
-                </div>
-              </Qx4BodyContainerStyled>
-
-              <Qx4FootersContainerStyled>
-                <MediumWrapperStyled>
-                  Cual es el nombre del personaje?
-                </MediumWrapperStyled>
-              </Qx4FootersContainerStyled>
-
-            </Qx4ContainerStyled>
-          </FrameStyled>
+          <FrameGame />
         </LayoutBaseStyled>
-
       </Router>
     </ThemeProvider>
   );
