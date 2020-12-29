@@ -1,7 +1,8 @@
 import { SuportedLocales } from '~/services/LocaleService/local.types';
 
 export interface InitialCoreOptions {
-  local: SuportedLocales
+  local: SuportedLocales,
+  gameContext: any
 }
 
 export enum CoreStatus{

@@ -18,7 +18,7 @@ export default {
 
 USAGE:
 
-import bl from '~/styles/baseline';
+import bl from '~/styles/shared/baseline';
 
 const H2 = styled.h2`
   margin-bottom: ${bl._d2};

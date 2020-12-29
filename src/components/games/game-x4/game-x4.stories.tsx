@@ -6,5 +6,5 @@ import MockData from './game-x4.mocks';
 
 storiesOf("GameX4", module).add(
   "default",
-  (): ReactElement => <GameX4 {...MockData.default}></GameX4>
+  (): ReactElement => <GameX4 quiz={MockData.withImage.quiz}></GameX4>
 );

@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
 
-// import media from '~/utils/media/media.index';
 import bl from '~/styles/shared/baseline.styles';
-
+import zi from '~/styles/shared/zindex.styles';
 
 export const GX4ContainerStyled = styled.div`
   display: flex;
   width: 100%;
+  height: 100%;
   flex-direction: column;
 `
 
@@ -24,6 +24,67 @@ export const GX4BodyContainerStyled = styled.div`
 export const GX4FootersContainerStyled = styled.div`
   width:100%;
   height: ${bl._m8};
+  z-index: ${zi.clickableOptions};
+`
+
+export const GX4AnswerKeyStyled = styled.div`
+  color: orange;
+  margin-right: 10px;
+  &:after{
+    display: inline: block;
+    content: ':';
+  }
+`
+
+export const GX4AnswerStyled = styled.div<{
+  isSelected: boolean,
+  isOk?: boolean
+}>`
+  border-radius: 28px;
+  line-height: ${bl._m2};
+  color: white;
+  display: flex;
+  flex-direction: row;
+  padding: 0 0 0 20px;
+  font-size: 28px;
+  width: 400px;
+  box-sizing: border-box;
+  
+
+  ${({ isSelected }) => isSelected &&
+    css`
+      color: black;
+      border: 1px solid white;
+      background-color: orange;
+      ${GX4AnswerKeyStyled}{
+        color:black;
+      }
+    `
+  }
+  ${({ isSelected }) => !isSelected &&
+    css`
+      border: 1px solid white;
+      background: rgb(72,50,150);
+      background: linear-gradient(180deg, rgba(72,50,150,1) 0%, rgba(17,8,51,1) 40%, rgba(17,8,51,1) 67%, rgba(70,44,165,1) 93%, rgba(72,50,150,1) 100%);
+  
+    `
+  }
+  ${({ isOk }) => isOk &&
+    css`
+    border: 3px solid green;
+    box-shadow: 0 0 10px green;
+    color: white;
+    background-color: rgba(0,0,0,.3);
+    ${GX4AnswerKeyStyled}{
+      color:green;
+    }
+  `
+  }`
+
+export const GX4AnwerColumnStyled = styled.div`
+  ${GX4AnswerStyled}:not(:last-child){
+    margin-bottom: ${bl._};
+  }
 `
 
 export const GX4AnwersContainerStyled = styled.div`
@@ -31,6 +92,11 @@ export const GX4AnwersContainerStyled = styled.div`
   flex-direction: row;
   justify-content: center;
   padding ${bl._} 0;
+  
+
+  ${GX4AnwerColumnStyled} + ${GX4AnwerColumnStyled}{
+    margin-left: 20px;
+  } 
 `
 
 export const GX4TimerColumnStyled = styled.div`
@@ -61,35 +127,6 @@ export const GX4TimerCounterStyled = styled.div`
   left: 0px;
 `
 
-export const GX4AnswerStyled = styled.div`
-  border-radius: 28px;
-  border: 1px solid white;
-  line-height: ${bl._m2};
-  color: white;
-  background: rgb(72,50,150);
-  background: linear-gradient(180deg, rgba(72,50,150,1) 0%, rgba(17,8,51,1) 40%, rgba(17,8,51,1) 67%, rgba(70,44,165,1) 93%, rgba(72,50,150,1) 100%);
-  display: flex;
-  flex-direction: row;
-  padding: 0 0 0 20px;
-  font-size: 28px;
-  width: 400px;
-`
-
-export const GX4AnswerKeyStyled = styled.div`
-  color: orange;
-  margin-right: 10px;
-  &:after{
-    display: inline: block;
-    content: ':';
-  }
-`
-
-export const GX4AnwerColumnStyled = styled.div`
-  ${GX4AnswerStyled}:not(:last-child){
-    margin-bottom: ${bl._};
-  }
-`
-
 export const GX4QuestionStyled = styled.div`
   display:flex;
   height: 100%;
@@ -105,15 +142,17 @@ export const CopyQestionStyled = styled.div`
 `
 
 export const GX4QuestionMonitorStyled = styled.div`
-  border: 1px solid white;
-  height: 100%;
+  position:relative;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  max-width: 640px;
   width:100%;
+  height: 100%;
+  margin: 0 auto;
+  border: 1px solid white;
   border-radius: 30px;
   background-color: rgba(0,0,0, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position:relative;
 
   &::after {
     display: block;

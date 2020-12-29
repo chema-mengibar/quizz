@@ -1,43 +1,59 @@
 import React from 'react'
 
-export interface GameProps {
-  idx: number
-  props: any | null,
-}
+import CoreService from '~/services/CoreService/CoreService'
+import { useTeamsContext, TeamsContextProps } from '~/context/Teams.context'
+
+import {
+  GameState, GameSteps
+} from './game.types'
 
 export interface GameContextProps {
-  gameState : GameProps,
-  gameDispatch: any
+  state: GameState,
+  dispatch: any
 }
 
 
-const GameContext  = React.createContext<GameContextProps | null>(null)
+const GameContext = React.createContext<GameContextProps | null>(null)
+let teamsContext: TeamsContextProps
 
-const initialState: GameProps = {
-  props: null,
-  idx: 0
+
+const initialState: GameState = {
+  current: {
+    round: 0,
+    quiz: 0,
+    step: GameSteps.pause
+  }
 };
 
 
-export function useGameContext () {
+export function useGameContext() {
   return React.useContext(GameContext)
 }
 
 
 let reducer = (state: any, action: any) => {
+  const core = CoreService.getInstance()
+  const currentState = { ...state }
+
   switch (action.type) {
     case "next":
-
-      // increment idx and get next game
-      const gameFromIdxProps = {}
-      return { 
-        ...state, 
-        idx: state.idx++,
-        props: gameFromIdxProps
-      }
+      currentState.current.quiz = core.gameService.setNextQuiz(currentState)
+      return currentState
+      break;
+    case "response":
+      console.log('[GAME CTX] action:response', action.payload)
+      return currentState
+      break;
+    case "stepSetPrepare":
+      currentState.current.step = GameSteps.prepare
+      return currentState
+      break;
+    case "stepSetAsking":
+      currentState.current.step = GameSteps.asking
+      return currentState
+      break;
     default:
       return state;
-   
   }
 };
 
@@ -46,13 +62,13 @@ type Props = {
   children: React.ReactNode
 };
 
-export function ThemeContextProvider({  children }: Props){
+
+export function GameContextProvider({ children }: Props) {
 
   const [state, dispatch] = React.useReducer(reducer, initialState)
-  const value: GameContextProps = { 
-    gameState: state, 
-    gameDispatch: dispatch 
-  }
+  const value: GameContextProps = { state, dispatch }
+
+  teamsContext = useTeamsContext()
 
   return (
     // @ts-ignore
@@ -65,18 +81,18 @@ export function ThemeContextProvider({  children }: Props){
 
 /*
 
-import {useThemeContext} from '~/context/Theme.context'
+import {useGameContext} from '~/context/Game.context'
 
-const themeContext = useThemeContext()
+const gameContext = useGameContext()
 
-themeContext.themeDispatch({ type: "toggle", payload: {}})
+gameContext.dispatch({ type: "toggle", payload: {}})
 
-themeContext.themeState.props.text._
+gameContext.state.props.text._
 
 
   useEffect(()=>{
     setTimeout(()=>{
-      themeContext.themeDispatch({ type: "toggle"})
+      gameContext.dispatch({ type: "toggle"})
     },2000)
   }, [])
 

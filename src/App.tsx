@@ -1,25 +1,19 @@
 import React from "react";
+import { hot } from 'react-hot-loader';
 import { ThemeProvider, css } from "styled-components";
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
-import { hot } from 'react-hot-loader';
 
+import { LayoutBaseStyled, } from '~/components/layout/layout.index'
 import CoreService from '~/services/CoreService/CoreService'
 import { useThemeContext, ThemeProps } from '~/context/Theme.context';
-
-import {
-  LayoutBaseStyled,
-} from '~/components/layout/layout.index'
-
 import FrameIntro from '~/components/frames/frame-intro/frame-intro.index';
 import FrameGame from '~/components/frames/frame-game/frame-game.index';
-
-import {
-
-} from '~/components/sandbox/layout-all.styles';
+import { useTeamsContext } from '~/context/Teams.context'
+import { useGameContext } from '~/context/Game.context';
 
 // @ts-ignore
 const SUBDIR = ___SUBDIR___;
@@ -48,12 +42,9 @@ function App() {
 export default hot(module)(App);
 
 /*
-
-
-        <Switch>
-          <Route path="/" component={FrameIntro} />
-        </Switch>
-
+  <Switch>
+    <Route path="/" component={FrameIntro} />
+  </Switch>
 
   <Route path="/lesson/:lessonId/:exerciseId?" component={Lesson} />
   <Route path="/trainer/:trainerId" component={Trainer} />

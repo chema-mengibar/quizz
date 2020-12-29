@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import theme from 'styled-theming';
 
 import bl from '~/styles/shared/baseline.styles';
+import zi from '~/styles/shared/zindex.styles';
 
 export const LayoutBaseStyled = styled.div`
   display:flex;
@@ -13,9 +14,18 @@ export const LayoutBaseStyled = styled.div`
 `
 
 export const FrameStyled = styled.div`
-  display:flex;
   width:100%;
   height:100%;
+  color:white;
+  overflow:hidden;
+`
+
+export const FrameGameStyled = styled.div`
+  position: relative;
+  width:100%;
+  height:100%;
+  color:white;
+  overflow:hidden;
 `
 
 export const MediumWrapperStyled = styled.div`
@@ -23,4 +33,22 @@ export const MediumWrapperStyled = styled.div`
   max-width:920px;
   margin: 0 auto;
   height: 100%;
+`
+
+
+export const FrameLoadingStyled = styled.div`
+  display:flex;
+  width:100%;
+  height:100%;
+  align-items:center;
+  justify-content: center;
+`
+
+export const FrameIndicatorsStyled = styled.div`
+  position: absolute;
+  width:100%;
+  height:100%;
+  top: 0;
+  left: 0;
+  z-index: ${zi.indicators};
 `

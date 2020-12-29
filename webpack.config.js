@@ -50,6 +50,7 @@ module.exports = function (env, argv) {
         }
       ]
     },
+
     plugins: [
       new webpack.DefinePlugin({
         ___SUBDIR___: JSON.stringify(render.subDir),

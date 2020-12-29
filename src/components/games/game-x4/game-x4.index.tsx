@@ -1,11 +1,10 @@
-import React, { ReactElement } from 'react'
-
-import { useThemeContext } from '~/context/Theme.context';
-import CoreService from '~/services/CoreService/CoreService';
+import React, { ReactElement, useEffect, useState } from 'react'
 
 import {
   MediumWrapperStyled,
 } from '~/components/layout/layout.index'
+import { useGameContext } from '~/context/Game.context'
+import CoreService from '~/services/CoreService/CoreService';
 
 import {
   GX4ContainerStyled,
@@ -27,17 +26,38 @@ import {
 import { GameX4Props, } from "./game-x4.types";
 
 
-const GameX4 = ({ dataCY }: GameX4Props): ReactElement => {
+const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
 
-  const { t } = CoreService
+  const gameContext = useGameContext()
+
+  const [selectedOptionKey, setSelectedOptionKey] = useState<string | null>(null)
+  const [isResolved, setIsResolved] = useState<boolean>(false)
+
+  const solutionItemsLeft = quiz.options.slice(0, 2)
+  const solutionItemsRight = quiz.options.slice(2, 4)
+
+
+  function onClickOption(optionKey: string): void {
+    setIsResolved(false)
+    setSelectedOptionKey(optionKey)
+    setTimeout(() => {
+      setIsResolved(true)
+      setTimeout(() => {
+        setIsResolved(false)
+        setSelectedOptionKey(null)
+        gameContext.dispatch({ type: 'next' })
+      }, 500)
+    }, 1000)
+  }
 
   return (
     <GX4ContainerStyled data-cy={dataCY}>
-
       <GX4HeaderContainerStyled>
         <MediumWrapperStyled>
           <GX4QuestionStyled>
-            <CopyQestionStyled>Cual es el nombre del <br />personaje <br />de la imagen?</CopyQestionStyled>
+            <CopyQestionStyled>
+              {quiz.question}
+            </CopyQestionStyled>
           </GX4QuestionStyled>
         </MediumWrapperStyled>
       </GX4HeaderContainerStyled>
@@ -45,7 +65,7 @@ const GameX4 = ({ dataCY }: GameX4Props): ReactElement => {
       <GX4BodyContainerStyled>
         <MediumWrapperStyled>
           <GX4QuestionMonitorStyled>
-            <GX4QuestionImageStyled style={{ backgroundImage: 'url(https://pagesix.com/wp-content/uploads/sites/3/2020/03/gettyimages-1200624305.jpg?quality=90&strip=all&w=618&h=410&crop=1)' }} />
+            <GX4QuestionImageStyled style={{ backgroundImage: `url(${quiz.source})` }} />
           </GX4QuestionMonitorStyled>
         </MediumWrapperStyled>
       </GX4BodyContainerStyled>
@@ -55,34 +75,41 @@ const GameX4 = ({ dataCY }: GameX4Props): ReactElement => {
           <GX4AnwersContainerStyled>
             <GX4AnwerColumnStyled>
               {
-                [
-                  { key: 'A', value: 'Jim Morrison' },
-                  { key: 'C', value: 'Nabucodonosor Jacinto I' },
-
-                ].map(item => {
-                  return <GX4AnswerStyled>
+                solutionItemsLeft.map(item => {
+                  return (<GX4AnswerStyled
+                    key={`gx4-option-${item.key}`}
+                    isSelected={selectedOptionKey === item.key}
+                    isOk={isResolved && quiz.solutionOptionKey === item.key}
+                    onClick={() => {
+                      onClickOption(item.key)
+                    }}>
                     <GX4AnswerKeyStyled>{item.key}</GX4AnswerKeyStyled>
                     <p>{item.value}</p>
-                  </GX4AnswerStyled>
+                  </GX4AnswerStyled>)
                 })
               }
             </GX4AnwerColumnStyled>
-            <GX4TimerColumnStyled>
-              <GX4TimerStyled >
-                50
-          <GX4TimerCounterStyled />
-              </GX4TimerStyled>
-            </GX4TimerColumnStyled>
+            {quiz.timeSeconds !== undefined &&
+              <GX4TimerColumnStyled>
+                <GX4TimerStyled >
+                  {quiz.timeSeconds}
+                  <GX4TimerCounterStyled />
+                </GX4TimerStyled>
+              </GX4TimerColumnStyled>
+            }
             <GX4AnwerColumnStyled>
               {
-                [
-                  { key: 'B', value: 'Espinete' },
-                  { key: 'D', value: 'Mr. T' },
-                ].map(item => {
-                  return <GX4AnswerStyled>
+                solutionItemsRight.map(item => {
+                  return (<GX4AnswerStyled
+                    key={`gx4-option-${item.key}`}
+                    isSelected={selectedOptionKey === item.key}
+                    isOk={isResolved && quiz.solutionOptionKey === item.key}
+                    onClick={() => {
+                      onClickOption(item.key)
+                    }}>
                     <GX4AnswerKeyStyled>{item.key}</GX4AnswerKeyStyled>
                     <p>{item.value}</p>
-                  </GX4AnswerStyled>
+                  </GX4AnswerStyled>)
                 })
               }
             </GX4AnwerColumnStyled>
