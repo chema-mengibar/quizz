@@ -2,6 +2,7 @@
 export default {
   indicators: 10,
   clickableOptions: 500,
+  notifications: 1500,
  }
 
 

@@ -34,6 +34,7 @@ export const GX4AnswerKeyStyled = styled.div`
     display: inline: block;
     content: ':';
   }
+
 `
 
 export const GX4AnswerStyled = styled.div<{
@@ -49,6 +50,37 @@ export const GX4AnswerStyled = styled.div<{
   font-size: 28px;
   width: 400px;
   box-sizing: border-box;
+  
+  transform: scale(0);
+  animation: anima-option-loader 1s;
+  animation-fill-mode: forwards;
+  
+
+  &.delay_0-0 {
+    animation-delay: 1s;
+  }
+
+  &.delay_0-1{
+    animation-delay: 2s;
+  }
+
+  &.delay_1-0 {
+    animation-delay: 3s;
+  }
+
+  &.delay_1-1 {
+    animation-delay: 4s;
+  }
+
+
+  @keyframes anima-option-loader {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
   
 
   ${({ isSelected }) => isSelected &&
@@ -79,6 +111,8 @@ export const GX4AnswerStyled = styled.div<{
       color:green;
     }
   `
+
+  
   }`
 
 export const GX4AnwerColumnStyled = styled.div`

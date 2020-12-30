@@ -1,5 +1,7 @@
 import React from 'react'
 
+import CoreService from '~/services/CoreService/CoreService'
+
 import {
   TeamsState, Buzzerkeys, TeamIds
 } from './teams.types'
@@ -48,14 +50,29 @@ export function useTeamsContext() {
 
 
 let reducer = (state: any, action: any) => {
-  const stateNow = { ...state }
+  const core = CoreService.getInstance()
+  const currentState = { ...state }
+
   switch (action.type) {
-    case "change":
-      stateNow.current.team = TeamIds.b
-      return stateNow
-    case "changeNoTeam":
-      stateNow.current.team = null
-      return stateNow
+    case "resetBuzzeredTeam":
+      currentState.current.team = null
+      return currentState
+    case "setBuzzeredTeam":
+      currentState.current.team = action.payload
+      return currentState
+      break;
+    case "jumpNextTeam":
+      core.teamsService.jumpNextTeam(currentState)
+      return currentState
+      break;
+    case "setBuzzeredTeamPoints":
+      const points =  action.payload
+      const team = core.teamsService.getCurrentTeam(currentState)
+      if( team ){
+        team.points += points
+      }
+      return currentState
+      break;
     default:
       return state;
 

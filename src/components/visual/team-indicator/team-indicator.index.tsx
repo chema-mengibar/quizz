@@ -18,9 +18,16 @@ const TeamIndicator = (): ReactElement | null => {
   const team = core.teamsService.getCurrentTeam(teamsContext.state)
 
   return (
+    <>
     <TeamIndicatorStyled data-cy="team-indicator" >
       <TeamColorStyled color={team && team.color} />
     </TeamIndicatorStyled >
+    {
+      teamsContext.state.teams.map( team =>{
+        return <div>{team.name}:{team.points}</div>
+      })
+    }
+    </>
   )
 };
 

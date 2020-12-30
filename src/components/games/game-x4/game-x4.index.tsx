@@ -3,6 +3,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import {
   MediumWrapperStyled,
 } from '~/components/layout/layout.index'
+import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
 import CoreService from '~/services/CoreService/CoreService';
 
@@ -29,43 +30,74 @@ import { GameX4Props, } from "./game-x4.types";
 const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
 
   const gameContext = useGameContext()
+  const teamsContext = useTeamsContext()
 
   const [selectedOptionKey, setSelectedOptionKey] = useState<string | null>(null)
   const [isResolved, setIsResolved] = useState<boolean>(false)
+
+  const [showQuestion, setShowQuestion] = useState<boolean>(false)
+  const [showOptions, setShowOptions] = useState<boolean>(false)
 
   const solutionItemsLeft = quiz.options.slice(0, 2)
   const solutionItemsRight = quiz.options.slice(2, 4)
 
 
+  useEffect(() => {
+    setShowQuestion(true)
+    setTimeout(() => {
+      setShowOptions(true)
+      setTimeout(() => {
+        gameContext.dispatch({ type: 'stepSetPlaying' })
+      }, 4000)
+    }, 3000)
+  }, [])
+
+
   function onClickOption(optionKey: string): void {
+
     setIsResolved(false)
     setSelectedOptionKey(optionKey)
     setTimeout(() => {
       setIsResolved(true)
+
+      if (quiz.solutionOptionKey === optionKey) {
+        gameContext.dispatch({ type: 'notySuccess' })
+        teamsContext.dispatch({
+          type: 'setBuzzeredTeamPoints',
+          payload: 1200
+        })
+
+      } else {
+        gameContext.dispatch({ type: 'notyError' })
+      }
       setTimeout(() => {
+        gameContext.dispatch({ type: 'notyReset' })
+        gameContext.dispatch({ type: 'next' })
         setIsResolved(false)
         setSelectedOptionKey(null)
-        gameContext.dispatch({ type: 'next' })
-      }, 500)
+      }, 2000)
     }, 1000)
+
   }
 
   return (
     <GX4ContainerStyled data-cy={dataCY}>
+
       <GX4HeaderContainerStyled>
         <MediumWrapperStyled>
-          <GX4QuestionStyled>
+          {showQuestion && <GX4QuestionStyled>
             <CopyQestionStyled>
               {quiz.question}
             </CopyQestionStyled>
-          </GX4QuestionStyled>
+          </GX4QuestionStyled>}
         </MediumWrapperStyled>
       </GX4HeaderContainerStyled>
 
       <GX4BodyContainerStyled>
         <MediumWrapperStyled>
           <GX4QuestionMonitorStyled>
-            <GX4QuestionImageStyled style={{ backgroundImage: `url(${quiz.source})` }} />
+            {showQuestion && <GX4QuestionImageStyled
+              style={{ backgroundImage: `url(${quiz.source})` }} />}
           </GX4QuestionMonitorStyled>
         </MediumWrapperStyled>
       </GX4BodyContainerStyled>
@@ -75,8 +107,9 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
           <GX4AnwersContainerStyled>
             <GX4AnwerColumnStyled>
               {
-                solutionItemsLeft.map(item => {
+                showOptions && solutionItemsLeft.map((item, idx) => {
                   return (<GX4AnswerStyled
+                    className={`delay_0-${idx}`}
                     key={`gx4-option-${item.key}`}
                     isSelected={selectedOptionKey === item.key}
                     isOk={isResolved && quiz.solutionOptionKey === item.key}
@@ -99,8 +132,9 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
             }
             <GX4AnwerColumnStyled>
               {
-                solutionItemsRight.map(item => {
+                showOptions && solutionItemsRight.map((item, idx) => {
                   return (<GX4AnswerStyled
+                    className={`delay_1-${idx}`}
                     key={`gx4-option-${item.key}`}
                     isSelected={selectedOptionKey === item.key}
                     isOk={isResolved && quiz.solutionOptionKey === item.key}

@@ -8,10 +8,25 @@ export enum GameSteps {
   resolving
 }
 
+export enum NotyTypes {
+  success,
+  error,
+  message
+}
+
+export interface Noty {
+  type: NotyTypes
+  message?: string
+}
+
 export interface GameState {
-  current:{
-    round: number,
+  noty: Noty | null
+  current: {
+    round: number
+    roundQuiz: number
+    turn: number
     quiz: number
     step: GameSteps
   }
+  endGame: boolean
 }

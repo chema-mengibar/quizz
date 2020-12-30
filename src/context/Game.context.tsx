@@ -4,7 +4,7 @@ import CoreService from '~/services/CoreService/CoreService'
 import { useTeamsContext, TeamsContextProps } from '~/context/Teams.context'
 
 import {
-  GameState, GameSteps
+  GameState, GameSteps, NotyTypes
 } from './game.types'
 
 export interface GameContextProps {
@@ -18,11 +18,15 @@ let teamsContext: TeamsContextProps
 
 
 const initialState: GameState = {
+  noty: null,
   current: {
     round: 0,
+    roundQuiz: 0,
+    turn: 0,
     quiz: 0,
     step: GameSteps.pause
-  }
+  },
+  endGame: false
 };
 
 
@@ -37,13 +41,11 @@ let reducer = (state: any, action: any) => {
 
   switch (action.type) {
     case "next":
+      core.gameService.roundCheck(currentState, teamsContext)
       currentState.current.quiz = core.gameService.setNextQuiz(currentState)
       return currentState
       break;
-    case "response":
-      console.log('[GAME CTX] action:response', action.payload)
-      return currentState
-      break;
+
     case "stepSetPrepare":
       currentState.current.step = GameSteps.prepare
       return currentState
@@ -52,6 +54,35 @@ let reducer = (state: any, action: any) => {
       currentState.current.step = GameSteps.asking
       return currentState
       break;
+    case "stepSetPlaying":
+      currentState.current.step = GameSteps.playing
+      return currentState
+      break;
+
+    case "notySuccess":
+      currentState.noty = {
+        type: NotyTypes.success,
+      }
+      return currentState
+      break;
+    case "notyError":
+      currentState.noty = {
+        type: NotyTypes.error,
+      }
+      return currentState
+      break;
+    case "notyMessage":
+      currentState.noty = {
+        type: NotyTypes.message,
+        message: action.payload
+      }
+      return currentState
+      break;
+    case "notyReset":
+      currentState.noty = null
+      return currentState
+      break;
+
     default:
       return state;
   }
