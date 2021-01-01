@@ -12,8 +12,6 @@ import {
   NotyErrorStyled,
   NotyMsgStyled
 } from "./notification.styles";
-import { NotificationProps, } from "./notification.types";
-
 
 const Notification = (): ReactElement | null => {
 
@@ -26,13 +24,13 @@ const Notification = (): ReactElement | null => {
   if (noty) {
     return (
       <NotificationStyled data-cy="notification">
-        {gameContext.state.noty.type === NotyTypes.success && 
+        {gameContext.state.noty.type === NotyTypes.success &&
           <NotySuccessStyled>✔</NotySuccessStyled>
         }
-        {gameContext.state.noty.type === NotyTypes.error && 
+        {gameContext.state.noty.type === NotyTypes.error &&
           <NotyErrorStyled>✘</NotyErrorStyled>
         }
-        {gameContext.state.noty.type === NotyTypes.message && 
+        {gameContext.state.noty.type === NotyTypes.message &&
           <NotyMsgStyled>{gameContext.state.noty.message}</NotyMsgStyled>
         }
       </NotificationStyled>

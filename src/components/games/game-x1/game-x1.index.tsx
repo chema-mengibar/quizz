@@ -7,17 +7,20 @@ import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
 import CoreService from '~/services/CoreService/CoreService';
 
+import {GXHeaderContainerStyled,
+  GXBodyContainerStyled,
+  GXContainerStyled,
+  GXFootersContainerStyled,
+  GXQuestionImageStyled,
+  GXQuestionMonitorStyled
+} from '../shared/games.styles'
+
 import {
-  GX1ContainerStyled,
-  GX1HeaderContainerStyled,
-  GX1BodyContainerStyled,
-  GX1FootersContainerStyled,
+
   GX1QuestionStyled,
   CopyQestionStyled,
   GX1AnwersContainerStyled,
   GX1AnwerColumnStyled,
-  GX1QuestionMonitorStyled,
-  GX1QuestionImageStyled,
   GX1AnwerStyled,
   ButtonResolveStyled,
   ButtonPointStyled,
@@ -83,9 +86,9 @@ const GameX1 = ({ dataCY, quiz }: GameX1Props): ReactElement => {
 
 
   return (
-    <GX1ContainerStyled data-cy={dataCY}>
+    <GXContainerStyled data-cy={dataCY}>
 
-      <GX1HeaderContainerStyled>
+      <GXHeaderContainerStyled>
         <MediumWrapperStyled>
           {showQuestion && <GX1QuestionStyled>
             <CopyQestionStyled>
@@ -93,20 +96,19 @@ const GameX1 = ({ dataCY, quiz }: GameX1Props): ReactElement => {
             </CopyQestionStyled>
           </GX1QuestionStyled>}
         </MediumWrapperStyled>
-      </GX1HeaderContainerStyled>
+      </GXHeaderContainerStyled>
 
-      { showQuestion && quiz.source && quiz.source !== '' && 
-        <GX1BodyContainerStyled>
+      { showQuestion && quiz.source && quiz.source !== '' &&
+        <GXBodyContainerStyled>
           <MediumWrapperStyled>
-          <GX1QuestionMonitorStyled>
-              <GX1QuestionImageStyled
-                style={{ backgroundImage: `url(${imagePath}${quiz.source})` }} />
-            </GX1QuestionMonitorStyled>
+          <GXQuestionMonitorStyled>
+              <GXQuestionImageStyled style={{ backgroundImage: `url(${imagePath}${quiz.source})` }} />
+            </GXQuestionMonitorStyled>
           </MediumWrapperStyled>
-        </GX1BodyContainerStyled> 
+        </GXBodyContainerStyled>
       }
 
-      <GX1FootersContainerStyled>
+      <GXFootersContainerStyled>
         <MediumWrapperStyled>
           <GX1AnwersContainerStyled>
             {isResolved && <GX1AnwerStyled>{quiz.solution}</GX1AnwerStyled>}
@@ -127,9 +129,9 @@ const GameX1 = ({ dataCY, quiz }: GameX1Props): ReactElement => {
             </GX1AnwerColumnStyled>
           </GX1AnwersControlsStyled>
         </MediumWrapperStyled>
-      </GX1FootersContainerStyled>
+      </GXFootersContainerStyled>
 
-    </GX1ContainerStyled>
+    </GXContainerStyled>
   )
 };
 

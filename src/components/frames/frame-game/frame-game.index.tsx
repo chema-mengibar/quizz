@@ -16,6 +16,7 @@ import {
 } from '~/components/layout/layout.index'
 import GameX4 from '~/components/games/game-x4/game-x4.index'
 import GameX1 from '~/components/games/game-x1/game-x1.index'
+import GameWords from '~/components/games/game-words/game-words.index'
 import GameLoading from '~/components/visual/game-loading/game-loading.index'
 import TeamIndicator from '~/components/visual/team-indicator/team-indicator.index'
 import BuzzerIndicator from '~/components/visual/buzzer-indicator/buzzer-indicator.index'
@@ -70,6 +71,9 @@ const FrameGame = (): ReactElement => {
           }
           {quiz && quiz.type === GameTypes.x1 &&
             <GameX1 quiz={quiz} />
+          }
+          {quiz && quiz.type === GameTypes.words &&
+            <GameWords quiz={quiz} />
           }
         </>
       }

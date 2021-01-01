@@ -1,6 +1,7 @@
 export enum GameTypes {
   x4,
   x1,
+  words,
 }
 
 export enum SourceTypes {
@@ -23,6 +24,7 @@ export interface Quiz {
   options?: Options[]
   solutionOptionKey: string,
   timeSeconds?: number
+  words?: string[]
 }
 
 
@@ -32,10 +34,7 @@ export enum PlayModeTypes {
   rebound
 }
 
-
 export type QuizRegsitry = Quiz[]
-
-
 
 export interface RoundConfig{
   quizes: number
@@ -45,7 +44,5 @@ export interface RoundConfig{
 }
 
 export interface GameConfig {
-
   rounds: RoundConfig[]
-
 }

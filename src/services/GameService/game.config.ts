@@ -2,9 +2,16 @@ import { GameConfig, PlayModeTypes } from './game-service.types'
 
 import RegistryX1 from './registry/registry-x1'
 import RegistryX4 from './registry/registry-x4'
+import RegistryWords from './registry/registry-words'
 
 export default {
   rounds: [
+    {
+      quizes: 1,
+      mode: PlayModeTypes.single,
+      turns: 3,
+      registry: RegistryWords
+    },
     {
       quizes: 10,
       mode: PlayModeTypes.single,
@@ -18,6 +25,5 @@ export default {
       registry: RegistryX1
     },
 
-  
   ]
 } as GameConfig

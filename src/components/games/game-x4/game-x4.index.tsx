@@ -7,11 +7,14 @@ import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
 import CoreService from '~/services/CoreService/CoreService';
 
+import {GXHeaderContainerStyled,
+  GXBodyContainerStyled,
+  GXContainerStyled,
+  GXFootersContainerStyled,
+  GXQuestionImageStyled,
+  GXQuestionMonitorStyled
+} from '../shared/games.styles'
 import {
-  GX4ContainerStyled,
-  GX4HeaderContainerStyled,
-  GX4BodyContainerStyled,
-  GX4FootersContainerStyled,
   GX4QuestionStyled,
   CopyQestionStyled,
   GX4AnwersContainerStyled,
@@ -21,8 +24,7 @@ import {
   GX4AnswerKeyStyled,
   GX4TimerStyled,
   GX4TimerCounterStyled,
-  GX4QuestionMonitorStyled,
-  GX4QuestionImageStyled
+
 } from "./game-x4.styles";
 import { GameX4Props, } from "./game-x4.types";
 
@@ -87,9 +89,9 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
   }
 
   return (
-    <GX4ContainerStyled data-cy={dataCY}>
+    <GXContainerStyled data-cy={dataCY}>
 
-      <GX4HeaderContainerStyled>
+      <GXHeaderContainerStyled>
         <MediumWrapperStyled>
           {showQuestion && <GX4QuestionStyled>
             <CopyQestionStyled>
@@ -97,18 +99,20 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
             </CopyQestionStyled>
           </GX4QuestionStyled>}
         </MediumWrapperStyled>
-      </GX4HeaderContainerStyled>
+      </GXHeaderContainerStyled>
 
-      { showQuestion && quiz.source && quiz.source !== '' && <GX4BodyContainerStyled>
-        <MediumWrapperStyled>
-         <GX4QuestionMonitorStyled>
-             <GX4QuestionImageStyled
-              style={{ backgroundImage: `url(${imagePath}${quiz.source})` }} />
-          </GX4QuestionMonitorStyled>
-        </MediumWrapperStyled>
-          </GX4BodyContainerStyled>  }
+      { showQuestion && quiz.source && quiz.source !== '' &&
+        <GXBodyContainerStyled>
+          <MediumWrapperStyled>
+           <GXQuestionMonitorStyled>
+               <GXQuestionImageStyled
+                style={{ backgroundImage: `url(${imagePath}${quiz.source})` }} />
+            </GXQuestionMonitorStyled>
+          </MediumWrapperStyled>
+        </GXBodyContainerStyled>
+      }
 
-      <GX4FootersContainerStyled>
+      <GXFootersContainerStyled>
         <MediumWrapperStyled>
           <GX4AnwersContainerStyled>
             <GX4AnwerColumnStyled>
@@ -155,9 +159,9 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
             </GX4AnwerColumnStyled>
           </GX4AnwersContainerStyled>
         </MediumWrapperStyled>
-      </GX4FootersContainerStyled>
+      </GXFootersContainerStyled>
 
-    </GX4ContainerStyled>
+    </GXContainerStyled>
   )
 };
 

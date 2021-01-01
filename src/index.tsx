@@ -11,15 +11,18 @@ import { AppContextProvider } from '~/context/App.context'
 import { ThemeContextProvider } from '~/context/Theme.context'
 import { GameContextProvider } from '~/context/Game.context'
 import { TeamsContextProvider } from '~/context/Teams.context'
+import { TimerContextProvider } from '~/context/Timer.context'
 
 ReactDOM.render(
   <AppContextProvider>
     <TeamsContextProvider>
       <GameContextProvider>
-        <ThemeContextProvider>
-          <GlobalStyles />
-          <App />
-        </ThemeContextProvider>
+        <TimerContextProvider>
+          <ThemeContextProvider>
+            <GlobalStyles />
+            <App />
+          </ThemeContextProvider>
+        </TimerContextProvider>
       </GameContextProvider>
     </TeamsContextProvider>
   </AppContextProvider>
