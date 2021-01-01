@@ -18,16 +18,16 @@ const initialState: TimerState = {
   status: TimerStatus.ready
 };
 
-export function useTeamsContext() {
+export function useTimerContext() {
   return React.useContext(TimerContext)
 }
 
 let reducer = (state: any, action: any) => {
   const core = CoreService.getInstance()
   const currentState = { ...state }
-
   switch (action.type) {
     case "setTime":
+      console.log( action.payload )
       currentState.timeInSeconds = action.payload
       return currentState
     default:

@@ -3,6 +3,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import {
   MediumWrapperStyled,
 } from '~/components/layout/layout.index'
+import Timer from "~/components/visual/timer/timer.index";
 import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
 import CoreService from '~/services/CoreService/CoreService';
@@ -23,20 +24,26 @@ import {
   GWWordsContainerStyled,
 } from "./game-words.styles";
 import { GameWordsProps, } from "./game-words.types";
+import {useTimerContext} from "~/context/Timer.context";
+
 
 
 const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
 
   const gameContext = useGameContext()
   const teamsContext = useTeamsContext()
+  const timerContext = useTimerContext()
 
   const {t} = CoreService
 
   const [okWords, setOkWords ] = useState<string[]>([])
 
-  const [showQuestion, setShowQuestion] = useState<boolean>(false)
+  const [showQuestion, setShowQuestion] = useState<boolean>(true)
 
   useEffect(() => {
+
+    timerContext.dispatch({type:'setTime', payload: 20})
+
     return ()=>{
       setShowQuestion(false)
       setOkWords([])
@@ -122,6 +129,7 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
 
       <GXFootersContainerStyled>
         <MediumWrapperStyled>
+          <Timer />
          { !showQuestion && <ButtonResolveStyled onClick={()=>{
             onClickStart()
           }}>{t('action_start')}</ButtonResolveStyled>}
