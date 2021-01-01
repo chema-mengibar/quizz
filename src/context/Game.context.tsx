@@ -19,11 +19,11 @@ let teamsContext: TeamsContextProps
 
 const initialState: GameState = {
   noty: null,
+  cursorRound: 0,
+  cursorTurn: 0,
+  cursorQuiz: 0,
+  cursorRoundQuiz: 0,
   current: {
-    round: 0,
-    roundQuiz: 0,
-    turn: 0,
-    quiz: 0,
     step: GameSteps.pause
   },
   endGame: false
@@ -40,12 +40,14 @@ let reducer = (state: any, action: any) => {
   const currentState = { ...state }
 
   switch (action.type) {
+
+    case 'prepareBuzzers':
+      core.gameService.initPlayTeam(currentState, teamsContext)
+      return currentState;
     case "next":
-      core.gameService.roundCheck(currentState, teamsContext)
-      currentState.current.quiz = core.gameService.setNextQuiz(currentState)
+      core.gameService.setNextQuiz(currentState, teamsContext)
       return currentState
       break;
-
     case "stepSetPrepare":
       currentState.current.step = GameSteps.prepare
       return currentState
@@ -56,9 +58,9 @@ let reducer = (state: any, action: any) => {
       break;
     case "stepSetPlaying":
       currentState.current.step = GameSteps.playing
+      core.gameService.buzzered(currentState, teamsContext)
       return currentState
       break;
-
     case "notySuccess":
       currentState.noty = {
         type: NotyTypes.success,

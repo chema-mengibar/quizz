@@ -1,5 +1,6 @@
 export enum GameTypes {
   x4,
+  x1,
 }
 
 export enum SourceTypes {
@@ -16,9 +17,10 @@ export interface Options {
 export interface Quiz {
   type: GameTypes
   question: string
+  solution?: string
   source?: string
   sourceType?: SourceTypes
-  options: Options[]
+  options?: Options[]
   solutionOptionKey: string,
   timeSeconds?: number
 }
@@ -32,3 +34,18 @@ export enum PlayModeTypes {
 
 
 export type QuizRegsitry = Quiz[]
+
+
+
+export interface RoundConfig{
+  quizes: number
+  mode: PlayModeTypes
+  turns: number
+  registry: QuizRegsitry
+}
+
+export interface GameConfig {
+
+  rounds: RoundConfig[]
+
+}

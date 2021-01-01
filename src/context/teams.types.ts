@@ -24,5 +24,6 @@ export interface TeamsState {
   teams: Team[]
   current:{
     team: TeamIds | null
+    buzzerAllowed: boolean
   }
 }

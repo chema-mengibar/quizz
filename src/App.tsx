@@ -1,19 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { hot } from 'react-hot-loader';
 import { ThemeProvider, css } from "styled-components";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  useHistory
 } from "react-router-dom";
 
-import { LayoutBaseStyled, } from '~/components/layout/layout.index'
 import CoreService from '~/services/CoreService/CoreService'
 import { useThemeContext, ThemeProps } from '~/context/Theme.context';
+import { useAppContext } from '~/context/App.context';
+
+import ReactCtxInit from '~/components/sandbox/react-ctx-init/react-ctx-init.index'
+import { LayoutBaseStyled, } from '~/components/layout/layout.index'
 import FrameIntro from '~/components/frames/frame-intro/frame-intro.index';
 import FrameGame from '~/components/frames/frame-game/frame-game.index';
-import { useTeamsContext } from '~/context/Teams.context'
-import { useGameContext } from '~/context/Game.context';
+import FrameRanking from '~/components/frames/frame-ranking/frame-ranking.index';
 
 // @ts-ignore
 const SUBDIR = ___SUBDIR___;
@@ -21,18 +24,25 @@ const SUBDIR = ___SUBDIR___;
 function App() {
 
   const themeContext = useThemeContext();
+  const appContext = useAppContext();
+
+  const history = useHistory();
 
   // @ts-ignore // todo Issue?
   const themeProps: ThemeProps = themeContext.themeState
 
   new CoreService()
 
-
   return (
     <ThemeProvider theme={themeProps}>
       <Router basename={`${SUBDIR}`} >
         <LayoutBaseStyled>
-          <FrameGame />
+          <ReactCtxInit />
+          <Switch>
+            <Route path="/ranking" component={FrameRanking} />
+            <Route path="/play" component={FrameGame} />
+            <Route path="/" component={FrameIntro} />
+          </Switch>
         </LayoutBaseStyled>
       </Router>
     </ThemeProvider>
@@ -42,10 +52,11 @@ function App() {
 export default hot(module)(App);
 
 /*
-  <Switch>
-    <Route path="/" component={FrameIntro} />
-  </Switch>
+USAGE:
 
-  <Route path="/lesson/:lessonId/:exerciseId?" component={Lesson} />
-  <Route path="/trainer/:trainerId" component={Trainer} />
+
+      { loaded && <Redirect to="/ranking" />  }
+
+<Route path="/lesson/:lessonId/:exerciseId?" component={Lesson} />
+<Route path="/trainer/:trainerId" component={Trainer} />
 */

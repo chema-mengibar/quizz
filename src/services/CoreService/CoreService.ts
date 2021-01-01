@@ -9,7 +9,7 @@ import { SuportedLocales, LocalDictionary } from '../LocaleService/local.types'
 
 class CoreService {
 
-  config: Config
+  configService: Config
   local: Local
   gameService: GameService
   teamsService: TeamsService
@@ -23,13 +23,13 @@ class CoreService {
 
     // Config Service
     const configInitialOptions = {
-      local: intialCoreOptions ? intialCoreOptions.local : SuportedLocales.en
+      local: intialCoreOptions ? intialCoreOptions.local : SuportedLocales.es
     }
-    this.config = new Config(configInitialOptions)
+    this.configService = new Config(configInitialOptions)
 
     // Locale Service
     const localeInitialOptions = {
-      local: this.config.currentLocal
+      local: this.configService.currentLocal
     }
     this.local = new Local(localeInitialOptions);
 

@@ -1,5 +1,4 @@
 
-import En from './locales/en';
 import Es from './locales/es';
 
 import { LocalDictionary, SuportedLocales, InitialOptions } from './local.types'
@@ -15,11 +14,8 @@ class Local {
   setLocalDictionary( locale: SuportedLocales ) : void{
     switch( locale ){
       case SuportedLocales.es:
-        this.dictionary = Es as LocalDictionary
-        break;
-      case SuportedLocales.en:
       default:
-        this.dictionary = En as LocalDictionary
+        this.dictionary = Es as LocalDictionary
         break;
     }
   }

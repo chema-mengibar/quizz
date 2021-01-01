@@ -49,12 +49,20 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
       setTimeout(() => {
         gameContext.dispatch({ type: 'stepSetPlaying' })
       }, 4000)
-    }, 3000)
-  }, [])
+    }, 2000)
+    return ()=>{
+      setSelectedOptionKey(null)
+      setIsResolved(false)
+      setShowQuestion(false)
+      setShowOptions(false)
+    }
+  }, [quiz])
 
+  const points = 100;
+
+  const imagePath = './static/images/quizzes/'
 
   function onClickOption(optionKey: string): void {
-
     setIsResolved(false)
     setSelectedOptionKey(optionKey)
     setTimeout(() => {
@@ -64,7 +72,7 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
         gameContext.dispatch({ type: 'notySuccess' })
         teamsContext.dispatch({
           type: 'setBuzzeredTeamPoints',
-          payload: 1200
+          payload: points
         })
 
       } else {
@@ -73,8 +81,6 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
       setTimeout(() => {
         gameContext.dispatch({ type: 'notyReset' })
         gameContext.dispatch({ type: 'next' })
-        setIsResolved(false)
-        setSelectedOptionKey(null)
       }, 2000)
     }, 1000)
 
@@ -93,14 +99,14 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
         </MediumWrapperStyled>
       </GX4HeaderContainerStyled>
 
-      <GX4BodyContainerStyled>
+      { showQuestion && quiz.source && quiz.source !== '' && <GX4BodyContainerStyled>
         <MediumWrapperStyled>
-          <GX4QuestionMonitorStyled>
-            {showQuestion && <GX4QuestionImageStyled
-              style={{ backgroundImage: `url(${quiz.source})` }} />}
+         <GX4QuestionMonitorStyled>
+             <GX4QuestionImageStyled
+              style={{ backgroundImage: `url(${imagePath}${quiz.source})` }} />
           </GX4QuestionMonitorStyled>
         </MediumWrapperStyled>
-      </GX4BodyContainerStyled>
+          </GX4BodyContainerStyled>  }
 
       <GX4FootersContainerStyled>
         <MediumWrapperStyled>

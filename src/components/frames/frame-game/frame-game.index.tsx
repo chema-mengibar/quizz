@@ -15,6 +15,7 @@ import {
   NotificationLayerStyled
 } from '~/components/layout/layout.index'
 import GameX4 from '~/components/games/game-x4/game-x4.index'
+import GameX1 from '~/components/games/game-x1/game-x1.index'
 import GameLoading from '~/components/visual/game-loading/game-loading.index'
 import TeamIndicator from '~/components/visual/team-indicator/team-indicator.index'
 import BuzzerIndicator from '~/components/visual/buzzer-indicator/buzzer-indicator.index'
@@ -37,6 +38,7 @@ const FrameGame = (): ReactElement => {
 
     setTimeout(() => {
       const currentQuiz = core.gameService.getQuiz(gameContext.state)
+      gameContext.dispatch({ type: 'prepareBuzzers' })
       setQuiz(currentQuiz)
       setTimeout(() => {
         gameContext.dispatch({ type: 'stepSetAsking' })
@@ -46,12 +48,11 @@ const FrameGame = (): ReactElement => {
 
   useEffect(() => {
     loadCurrentQuiz()
-  }, [gameContext.state.current.quiz])
+  }, [gameContext.state.cursorRoundQuiz])
 
 
   return (
     <FrameGameStyled>
-
       {gameContext.state.current.step === GameSteps.prepare &&
         <FrameLoadingStyled>
           <GameLoading />
@@ -66,6 +67,9 @@ const FrameGame = (): ReactElement => {
 
           {quiz && quiz.type === GameTypes.x4 &&
             <GameX4 quiz={quiz} />
+          }
+          {quiz && quiz.type === GameTypes.x1 &&
+            <GameX1 quiz={quiz} />
           }
         </>
       }

@@ -21,11 +21,11 @@ export interface Noty {
 
 export interface GameState {
   noty: Noty | null
+  cursorRound: number
+  cursorTurn: number
+  cursorQuiz: number
+  cursorRoundQuiz: number
   current: {
-    round: number
-    roundQuiz: number
-    turn: number
-    quiz: number
     step: GameSteps
   }
   endGame: boolean

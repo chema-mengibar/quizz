@@ -3,7 +3,6 @@ export type LocalDictionary = {
 }
 
 export enum SuportedLocales {
-  en,
   es
 }
 

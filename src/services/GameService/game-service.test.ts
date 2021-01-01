@@ -1,6 +1,7 @@
 import { TeamsContextProps } from '~/context/Teams.context'
 import { GameState } from '~/context/game.types'
 
+import { GameConfig, PlayModeTypes } from './game-service.types'
 import GameService from './game-service'
 
 
@@ -30,73 +31,125 @@ const mockTeamsCtxt = {
 } as TeamsContextProps
 
 
-describe('checkRound()', () => {
+describe('setNextQuiz()', () => {
   it('case 1: change the turn', () => {
 
-    const gameService =   new GameService()
+    const mockConfig = {
+      rounds: [
+        {
+          quizes: 1,
+          mode: PlayModeTypes.single,
+          turns: 3,
+          registry: []
+        },
+        {
+          quizes: 25,
+          mode: PlayModeTypes.faster,
+          turns: 1,
+          registry: []
+        }
+      ]
+    }
+
+    const gameService =   new GameService( mockConfig )
 
     const mockGameCtxtState: GameState = {
       noty: null,
+      cursorRound: 0,
+      cursorTurn: 0,
+      cursorQuiz: 0,
+      cursorRoundQuiz: 0,
       current: {
-        round: 0,
-        roundQuiz: 1,
-        turn: 0,
-        quiz: 0,
         step: 0
       },
       endGame: false
     }
 
-    gameService.roundCheck( mockGameCtxtState, mockTeamsCtxt )
-    console.log( 'TEST', mockGameCtxtState )
-    expect( mockGameCtxtState.current.round ).toBe(0)
-    expect( mockGameCtxtState.current.roundQuiz ).toBe(0)
-    expect( mockGameCtxtState.current.turn ).toBe(1)
+    gameService.setNextQuiz( mockGameCtxtState, mockTeamsCtxt )
+    
+    expect( mockGameCtxtState.cursorRound ).toBe(0)
+    expect( mockGameCtxtState.cursorTurn ).toBe(1)
+    expect( mockGameCtxtState.cursorQuiz ).toBe(0)
   })
 
 
   it('case 2: change the round', () => {
 
-    const gameService =   new GameService()
+    const mockConfig = {
+      rounds: [
+        {
+          quizes: 1,
+          mode: PlayModeTypes.single,
+          turns: 3,
+          registry: []
+        },
+        {
+          quizes: 25,
+          mode: PlayModeTypes.faster,
+          turns: 1,
+          registry: []
+        }
+      ]
+    }
+
+    const gameService =   new GameService( mockConfig )
 
     const mockGameCtxtState: GameState = {
       noty: null,
+      cursorRound: 0,
+      cursorTurn: 2,
+      cursorQuiz: 1,
+      cursorRoundQuiz: 0,
       current: {
-        round: 0,
-        roundQuiz: 1,
-        turn: 2,
-        quiz: 0,
         step: 0
       },
       endGame: false
     }
 
-    gameService.roundCheck( mockGameCtxtState, mockTeamsCtxt )
-    console.log( 'TEST', mockGameCtxtState )
-    expect( mockGameCtxtState.current.round ).toBe(1)
-    expect( mockGameCtxtState.current.roundQuiz ).toBe(0)
-    expect( mockGameCtxtState.current.turn ).toBe(0)
+    gameService.setNextQuiz( mockGameCtxtState, mockTeamsCtxt )
+    
+    expect( mockGameCtxtState.cursorRound ).toBe(1)
+    expect( mockGameCtxtState.cursorTurn ).toBe(0)
+    expect( mockGameCtxtState.cursorQuiz ).toBe(0)
   })
 
   it('case 3: end game', () => {
 
-    const gameService =   new GameService()
+    const mockConfig = {
+      rounds: [
+        {
+          quizes: 1,
+          mode: PlayModeTypes.single,
+          turns: 3,
+          registry: []
+        },
+        {
+          quizes: 25,
+          mode: PlayModeTypes.faster,
+          turns: 1,
+          registry: []
+        }
+      ]
+    }
+
+    const gameService =   new GameService( mockConfig )
 
     const mockGameCtxtState: GameState = {
       noty: null,
+      cursorRound: 1,
+      cursorTurn: 0,
+      cursorQuiz: 24,
+      cursorRoundQuiz: 0,
       current: {
-        round: 1,
-        roundQuiz: 24,
-        turn: 1,
-        quiz: 0,
         step: 0
       },
       endGame: false
     }
 
-    gameService.roundCheck( mockGameCtxtState, mockTeamsCtxt )
-    console.log( 'TEST', mockGameCtxtState )
-
+    gameService.setNextQuiz( mockGameCtxtState, mockTeamsCtxt )
+    
     expect( mockGameCtxtState.endGame ).toBe(true)
   })
+
+
 })

@@ -16,7 +16,8 @@ const TeamsContext = React.createContext<TeamsContextProps | null>(null)
 
 const initialState: TeamsState = {
   current: {
-    team: TeamIds.a,
+    team: null,
+    buzzerAllowed: false
   },
   teams: [
     {
@@ -54,15 +55,28 @@ let reducer = (state: any, action: any) => {
   const currentState = { ...state }
 
   switch (action.type) {
+    case "buzzerAllowed":
+      currentState.current.buzzerAllowed = true
+      return currentState
+    case "buzzerBlock":
+      currentState.current.buzzerAllowed = false
+      return currentState
     case "resetBuzzeredTeam":
       currentState.current.team = null
       return currentState
     case "setBuzzeredTeam":
-      currentState.current.team = action.payload
+      if(currentState.current.buzzerAllowed){
+        currentState.current.team = action.payload
+        currentState.current.buzzerAllowed = false
+      }
       return currentState
       break;
     case "jumpNextTeam":
       core.teamsService.jumpNextTeam(currentState)
+      return currentState
+      break;
+    case "setStartTeam":
+      currentState.current.team = currentState.teams[0].id
       return currentState
       break;
     case "setBuzzeredTeamPoints":

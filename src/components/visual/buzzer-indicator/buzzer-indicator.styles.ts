@@ -6,7 +6,9 @@ export const BuzzerIndicatorStyled = styled.div`
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: rgba(255,255,255,.5);
+  background-color: rgba(255,255,255, .8);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 `;
 
 export const StepColorStyled = styled.div<{color?: string}>`

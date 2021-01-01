@@ -51,6 +51,10 @@ export const FrameIndicatorsStyled = styled.div`
   top: 0;
   left: 0;
   z-index: ${zi.indicators};
+
+  & > div{
+    margin-top:5px;
+  }
 `
 
 export const NotificationLayerStyled = styled.div`

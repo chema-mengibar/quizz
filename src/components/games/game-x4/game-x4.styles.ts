@@ -11,12 +11,12 @@ export const GX4ContainerStyled = styled.div`
 `
 
 export const GX4HeaderContainerStyled = styled.div`
-  height: ${bl._m6};
+  min-height: ${bl._m6};
+  flex: 1;
 `
 
 export const GX4BodyContainerStyled = styled.div`
-  min-height:200px;
-  flex:1;
+  min-height:300px;
   width:100%;
   position:relative;
 `

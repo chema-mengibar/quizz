@@ -1,100 +1,113 @@
 import { GameState } from '~/context/game.types'
 import { TeamsContextProps } from '~/context/Teams.context'
 
-import { QuizRegsitry, Quiz, GameTypes, SourceTypes, PlayModeTypes } from './game-service.types'
-import QuizRegistry from './games-registry'
-
+import { GameConfig, Quiz, GameTypes, SourceTypes, PlayModeTypes } from './game-service.types'
+import DefaultGameConfig from './game.config'
 
 class GameService {
 
-  registry: QuizRegsitry = QuizRegistry
+  config: GameConfig = DefaultGameConfig
 
-  constructor() {
+  
+  constructor( _config?: GameConfig  ) { 
 
-  }
-
-  config = {
-    rounds: [
-      {
-        quizes: 2,
-        mode: PlayModeTypes.single,
-        turns: 3,
-      },
-      {
-        quizes: 25,
-        mode: PlayModeTypes.faster,
-        turns: 1,
-      }
-    ]
-  }
-
-  roundCheck(gameCtxtState: GameState, teamsContext: TeamsContextProps) {
-    
-    const currentRound = gameCtxtState.current.round
-    
-    gameCtxtState.current.roundQuiz = gameCtxtState.current.roundQuiz + 1
-
-    if (gameCtxtState.current.roundQuiz >= this.config.rounds[currentRound].quizes) {
-      
-      if (gameCtxtState.current.turn >= this.config.rounds[currentRound].turns - 1) {
-        
-        gameCtxtState.current.turn = 0
-        
-        const nextRoundIdx = gameCtxtState.current.round + 1
-        
-        if (nextRoundIdx === this.config.rounds.length) {
-          // Game ends
-          teamsContext.dispatch({type:'resetBuzzeredTeam'})
-          gameCtxtState.endGame = true
-          return
-        }
-        gameCtxtState.current.round = nextRoundIdx
-
-        const roundConfig = this.config.rounds[nextRoundIdx]
-
-        if( roundConfig.mode === PlayModeTypes.faster ){
-          teamsContext.dispatch({type:'resetBuzzeredTeam'})
-        }else{
-          teamsContext.dispatch({type:'jumpNextTeam'})
-        }
-      }
-      else{
-        
-        gameCtxtState.current.turn = gameCtxtState.current.turn + 1
-        
-        if( this.config.rounds[currentRound].mode === PlayModeTypes.single ){
-          // Change Team in round
-          teamsContext.dispatch({type:'jumpNextTeam'})
-        }
-      }
-      gameCtxtState.current.roundQuiz = 0
-      
-    }else{
-
-      const roundIdx = gameCtxtState.current.round
-
-      const roundConfig = this.config.rounds[roundIdx]
-
-      if( roundConfig.mode === PlayModeTypes.faster ){
-        teamsContext.dispatch({type:'resetBuzzeredTeam'})
-      }
-
+    if( _config ){
+      this.config =  _config
     }
   }
 
-  setNextQuiz(gameCtxtState: GameState): number {
-    const idx = gameCtxtState.current.quiz + 1
-    const isLastQuizz = idx >= this.registry.length;
+  getCurrentRoundConfig(gameCtxtState: GameState): any {
+    const currentRound = gameCtxtState.cursorRound
+    return this.config.rounds[currentRound]
+  }
+
+  initPlayTeam(gameCtxtState: GameState, teamsContext: TeamsContextProps) {
+    const roundConfig = this.getCurrentRoundConfig(gameCtxtState)
+    const { cursorRound, cursorTurn, cursorQuiz } = gameCtxtState
+    if ( cursorRound === 0 && cursorTurn==0 && cursorQuiz == 0) {
+      if (roundConfig.mode === PlayModeTypes.single) {
+        teamsContext.dispatch({ type: 'setStartTeam' })
+      }
+    }
+  }
+
+  setNextQuiz(gameCtxtState: GameState, teamsContext: TeamsContextProps) {
+    /*
+      state:
+        - cursorRound: 0,
+        - cursorTurn: 0,
+        - cursorQuiz: 0,
+        - cursorRoundQuiz: 0, <- X
+
+      config:
+        - rounds[]
+          - quizes
+          - turns
+    */
+
+    const roundIdx = gameCtxtState.cursorRound
+
+    // next turn-quiz
+    gameCtxtState.cursorQuiz = gameCtxtState.cursorQuiz + 1
+
+    if( gameCtxtState.cursorQuiz >= this.config.rounds[ roundIdx ].quizes ){
+      gameCtxtState.cursorQuiz = 0
+
+      // next turn-team
+      gameCtxtState.cursorTurn = gameCtxtState.cursorTurn + 1
+      if( gameCtxtState.cursorTurn >= this.config.rounds[ roundIdx ].turns ){
+        gameCtxtState.cursorTurn = 0
+
+        // next game-round
+        gameCtxtState.cursorRound = gameCtxtState.cursorRound + 1
+
+        if( gameCtxtState.cursorRound >= this.config.rounds.length ){
+          gameCtxtState.endGame = true
+          return
+        }
+      }
+      
+      // Change team each change-turn
+      const currentRound0 = gameCtxtState.cursorRound
+      if (this.config.rounds[currentRound0].mode === PlayModeTypes.single) {
+        // Change Team in round
+        teamsContext.dispatch({ type: 'jumpNextTeam' })
+      }
+    }
+
+    // Reset team quiz for faster-mode
+    const currentRound1 = gameCtxtState.cursorRound
+    if (this.config.rounds[currentRound1].mode === PlayModeTypes.faster) {
+      teamsContext.dispatch({ type: 'resetBuzzeredTeam' })
+    }
+
+    this.incRoundQuizCursor( gameCtxtState )
+  }
+
+  buzzered(gameCtxtState: GameState, teamsContext: TeamsContextProps) {
+    setTimeout(() => {
+      teamsContext.dispatch({ type: 'buzzerAllowed' })
+    }, 100)
+  }
+
+  incRoundQuizCursor(gameCtxtState: GameState) {
+    const roundIdx = gameCtxtState.cursorRound;
+
+    const quizId = gameCtxtState.cursorRoundQuiz + 1;
+
+    const isLastQuizz = quizId >= this.config.rounds[roundIdx].registry.length;
 
     if (isLastQuizz) {
-      return 0;
+      gameCtxtState.cursorRoundQuiz = 0
     } else {
-      return idx;
+      gameCtxtState.cursorRoundQuiz = quizId
     }
   }
 
   getQuiz(gameCtxtState: GameState): Quiz {
-    return this.registry[gameCtxtState.current.quiz];
+    const roundIdx = gameCtxtState.cursorRound
+    const quizId = gameCtxtState.cursorRoundQuiz
+    return this.config.rounds[roundIdx].registry[quizId]
   }
 
 }

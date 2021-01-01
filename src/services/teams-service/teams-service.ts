@@ -5,13 +5,9 @@ import { TeamsContextProps } from '~/context/Teams.context'
 
 class TeamsService {
 
-
   flagKeys = false
 
-  constructor() {
-
-  }
-
+  // constructor() { }
 
   initBuzzers(teamsCtxt: TeamsContextProps): void {
     if (!this.flagKeys) {
@@ -26,9 +22,7 @@ class TeamsService {
   }
 
   getCurrentTeam(teamsCtxtState: TeamsState): Team {
-
     const currentTeamId = teamsCtxtState.current.team
-
     if (currentTeamId !== null) {
       const currentTeam = teamsCtxtState.teams.find(teamItem => {
         return teamItem.id === currentTeamId

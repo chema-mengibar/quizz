@@ -1,6 +1,8 @@
 export default {
   'dummy': 'Dummy es',
-  'title': 'Kartuli es',
+  'title': 'Quizz',
+  'ranking_title': 'Puntuaciones',
+  'action_resolve': 'Resolver',
    
   '':'',
 }

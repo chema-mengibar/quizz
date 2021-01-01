@@ -1,7 +1,6 @@
 import React, {ReactElement} from 'react'
 
-import { GameSteps } from '~/context/game.types'
-import { useGameContext } from '~/context/Game.context';
+import { useTeamsContext } from '~/context/Teams.context';
 import CoreService from '~/services/CoreService/CoreService';
 
 import {
@@ -15,22 +14,16 @@ const BuzzerIndicator = (): ReactElement => {
 
   const core = CoreService.getInstance()
 
-  const gameContext = useGameContext()
+  const teamsContext = useTeamsContext()
 
-  function mapStepToColor( step: GameSteps ): string{
-    switch (step) {
-      case GameSteps.playing:
-        return 'green'
-        break;
-      default:
-        return 'red';
-    }  
+  function mapStepToColor( buzzerAllowedFlag: boolean ): string{
+    return buzzerAllowedFlag ? 'green' : 'red'
   }
 
   return (
     <BuzzerIndicatorStyled data-cy="buzzer-indicator">
       <StepColorStyled 
-        color={mapStepToColor( gameContext.state.current.step ) }
+        color={mapStepToColor( teamsContext.state.current.buzzerAllowed ) }
       />
     </BuzzerIndicatorStyled>
   )
