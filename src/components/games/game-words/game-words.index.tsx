@@ -9,8 +9,7 @@ import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
 import CoreService from '~/services/CoreService/CoreService';
 import {
-  GXHeaderContainerStyled,
-  GXBodyContainerStyled,
+  GXQContainerStyled,
   GXContainerStyled,
   GXFootersContainerStyled,
   GXQuestionMonitorStyled,
@@ -40,7 +39,7 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
   const [showQuestion, setShowQuestion] = useState<boolean>(false)
 
   const points = 25;
-  const timeSeconds = 5;
+  const timeSeconds = 50;
 
   useEffect(() => {
     timerContext.dispatch({ type: 'setTime', payload: timeSeconds })
@@ -89,7 +88,9 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
   return (
     <GXContainerStyled data-cy={dataCY}>
 
-      <GXHeaderContainerStyled>
+      <GXQContainerStyled
+        className={ !showQuestion ? 'single':''}
+      >
         <MediumWrapperStyled>
           <GWQuestionStyled>
             <CopyQestionStyled>
@@ -98,10 +99,10 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
             </CopyQestionStyled>
           </GWQuestionStyled>
         </MediumWrapperStyled>
-      </GXHeaderContainerStyled>
+      </GXQContainerStyled>
 
       {showQuestion &&
-        <GXBodyContainerStyled>
+        <GXQContainerStyled className="question">
           <MediumWrapperStyled>
             <GXQuestionMonitorStyled>
               <GWWordsContainerStyled>
@@ -123,15 +124,15 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
               </GWWordsContainerStyled>
             </GXQuestionMonitorStyled>
           </MediumWrapperStyled>
-        </GXBodyContainerStyled>
+        </GXQContainerStyled>
       }
 
       <GXFootersContainerStyled>
         <MediumWrapperStyled>
           <GWWordsControlPanelStyled>
-            
-            {!showQuestion && 
-              <ButtonResolveStyled 
+
+            {!showQuestion &&
+              <ButtonResolveStyled
                 onClick={() => {
                   onClickStart()
                 }}

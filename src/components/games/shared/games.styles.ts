@@ -98,23 +98,25 @@ export const GXContainerStyled = styled.div`
   flex-direction: column;
 `
 
-export const GXHeaderContainerStyled = styled.div`
-  min-height: 80px;
-  flex: 1;
+export const GXQContainerStyled = styled.div`
+  height: 20%;
   z-index: ${zi.clickableOptions};
-`
-
-export const GXBodyContainerStyled = styled.div`
-  height: auto;
-  width: 100%;
-  position: relative;
-  margin: 30px 0;
-  z-index: ${zi.clickableOptions};
+  
+  &.single {
+    height: 70%;
+  }
+  
+  &:nth-of-type(2n) {
+    height: 50%;
+    width: 100%;
+    position: relative;
+    margin: 30px 0;
+  }
 `
 
 export const GXFootersContainerStyled = styled.div`
   width:100%;
-  min-height: 180px;
+  height: 30%;
   z-index: ${zi.clickableOptions};
 `
 
@@ -131,10 +133,9 @@ export const GXQuestionMonitorStyled = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
-  max-width: 640px;
+  max-width: 920px;
   width:100%;
-  max-height: 450px;
-  height: 300px;
+  height: 100%;
   margin: 0 auto;
   border: 1px solid white;
   border-radius: 30px;

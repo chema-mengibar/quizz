@@ -5,8 +5,7 @@ import {
 } from '~/components/layout/layout.index'
 import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
-import {GXHeaderContainerStyled,
-  GXBodyContainerStyled,
+import {GXQContainerStyled,
   GXContainerStyled,
   GXFootersContainerStyled,
   GXQuestionImageStyled,
@@ -89,7 +88,9 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
   return (
     <GXContainerStyled data-cy={dataCY}>
 
-      <GXHeaderContainerStyled>
+      <GXQContainerStyled
+        className={ !(quiz.source && quiz.source !== '') ? 'single':''}
+      >
         <MediumWrapperStyled>
           {showQuestion && <GX4QuestionStyled>
             <CopyQestionStyled>
@@ -97,17 +98,17 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
             </CopyQestionStyled>
           </GX4QuestionStyled>}
         </MediumWrapperStyled>
-      </GXHeaderContainerStyled>
+      </GXQContainerStyled>
 
       { showQuestion && quiz.source && quiz.source !== '' &&
-        <GXBodyContainerStyled>
+        <GXQContainerStyled className="question">
           <MediumWrapperStyled>
            <GXQuestionMonitorStyled>
                <GXQuestionImageStyled
                 style={{ backgroundImage: `url(${imagePath}${quiz.source})` }} />
             </GXQuestionMonitorStyled>
           </MediumWrapperStyled>
-        </GXBodyContainerStyled>
+        </GXQContainerStyled>
       }
 
       <GXFootersContainerStyled>

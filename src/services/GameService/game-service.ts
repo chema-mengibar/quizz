@@ -30,7 +30,7 @@ class GameService {
     const responseX1 = await API.fetchAsync('http://quizz.motuo.info/registry.php/?cmd=data&type=x1');
     const responseX4 = await API.fetchAsync('http://quizz.motuo.info/registry.php/?cmd=data&type=x4');
     const responseWords = await API.fetchAsync('http://quizz.motuo.info/registry.php/?cmd=data&type=words');
-    
+
     const responseX1WithType = responseX1.map( item => {
       return {
         ...item,
