@@ -8,6 +8,19 @@ export default [
       'rose',
       'tanen',
       'lilen',
+      'miro',
+      'bla',
+    ]
+  },
+  {
+    type: GameTypes.words,
+    words:[
+      'gato',
+      'perro',
+      'submarino',
+      'tesoro',
+      'miro',
+      'bla',
     ]
   },
 ] as QuizRegsitry

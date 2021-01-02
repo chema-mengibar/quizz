@@ -24,14 +24,13 @@ const SUBDIR = ___SUBDIR___;
 function App() {
 
   const themeContext = useThemeContext();
-  const appContext = useAppContext();
-
-  const history = useHistory();
 
   // @ts-ignore // todo Issue?
   const themeProps: ThemeProps = themeContext.themeState
 
-  new CoreService()
+  const core = new CoreService()
+
+  core.gameService.prepareRounds()
 
   return (
     <ThemeProvider theme={themeProps}>

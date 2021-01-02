@@ -1,12 +1,15 @@
-import {Team, TeamIds} from "~/context/teams.types";
+import { Team, TeamIds } from "~/context/teams.types";
 
 export enum TimerStatus {
-  ready,
-  pause,
-  end
+  ready = 'ready',
+  start = 'start',
+  counting = 'counting',
+  pause = 'pause',
+  end = 'end'
 }
 
 export interface TimerState {
   timeInSeconds: number
-  status:TimerStatus
+  currentTime: number
+  status: TimerStatus
 }

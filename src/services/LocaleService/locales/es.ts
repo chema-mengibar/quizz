@@ -6,5 +6,6 @@ export default {
   'action_start': 'Empezar',
   'points': 'puntos',
   'prepare_team': 'Preparados ?',
+  'timer_seconds': "seg.",
   '':'',
 }

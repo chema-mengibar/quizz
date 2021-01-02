@@ -3,29 +3,28 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import {
   MediumWrapperStyled,
 } from '~/components/layout/layout.index'
+import { useTimerContext } from "~/context/Timer.context";
 import Timer from "~/components/visual/timer/timer.index";
 import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
 import CoreService from '~/services/CoreService/CoreService';
-
-import {GXHeaderContainerStyled,
+import {
+  GXHeaderContainerStyled,
   GXBodyContainerStyled,
   GXContainerStyled,
   GXFootersContainerStyled,
   GXQuestionMonitorStyled,
-} from '../shared/games.styles'
-import {GX4AnswerStyled,
-} from '../game-x4/game-x4.styles'
+  GXAnswerStyled
+} from '~/components/games/shared/games.styles'
 
 import {
   GWQuestionStyled,
   CopyQestionStyled,
   ButtonResolveStyled,
   GWWordsContainerStyled,
+  GWWordsControlPanelStyled
 } from "./game-words.styles";
 import { GameWordsProps, } from "./game-words.types";
-import {useTimerContext} from "~/context/Timer.context";
-
 
 
 const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
@@ -34,37 +33,38 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
   const teamsContext = useTeamsContext()
   const timerContext = useTimerContext()
 
-  const {t} = CoreService
+  const { t } = CoreService
 
-  const [okWords, setOkWords ] = useState<string[]>([])
+  const [okWords, setOkWords] = useState<string[]>([])
 
-  const [showQuestion, setShowQuestion] = useState<boolean>(true)
+  const [showQuestion, setShowQuestion] = useState<boolean>(false)
+
+  const points = 25;
+  const timeSeconds = 5;
 
   useEffect(() => {
-
-    timerContext.dispatch({type:'setTime', payload: 20})
-
-    return ()=>{
+    timerContext.dispatch({ type: 'setTime', payload: timeSeconds })
+    return () => {
       setShowQuestion(false)
       setOkWords([])
     }
   }, [quiz])
 
-  const points = 25;
 
-  function onWordClick( word ){
+  function onWordClick(word) {
     const listWords = [...okWords]
-    if( !listWords.includes(word)){
+    if (!listWords.includes(word)) {
       listWords.push(word)
-    }else {
+    } else {
       const wordIdx = listWords.indexOf(word)
       listWords.splice(wordIdx, 1);
     }
-    setOkWords( listWords )
+    setOkWords(listWords)
   }
 
-  function onClickStart(){
+  function onClickStart() {
     setShowQuestion(true)
+    timerContext.dispatch({ type: 'startTimer' })
     setTimeout(() => {
       setTimeout(() => {
         gameContext.dispatch({ type: 'stepSetPlaying' })
@@ -72,14 +72,14 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
     }, 2000)
   }
 
-  function onClickResolve(){
+  function onClickResolve() {
     const numWords = okWords.length
     const totalPoints = points * numWords
     teamsContext.dispatch({
       type: 'setBuzzeredTeamPoints',
       payload: totalPoints
     })
-    gameContext.dispatch({ type: 'notyMessage', payload: `${totalPoints} ${t('points')}`})
+    gameContext.dispatch({ type: 'notyMessage', payload: `${totalPoints} ${t('points')}` })
     setTimeout(() => {
       gameContext.dispatch({ type: 'notyReset' })
       gameContext.dispatch({ type: 'next' })
@@ -91,37 +91,36 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
 
       <GXHeaderContainerStyled>
         <MediumWrapperStyled>
-           <GWQuestionStyled>
+          <GWQuestionStyled>
             <CopyQestionStyled>
-              {t('prepare_team')}
+              { !showQuestion && t('prepare_team')}
+              { showQuestion && <Timer />}
             </CopyQestionStyled>
-
           </GWQuestionStyled>
-
         </MediumWrapperStyled>
       </GXHeaderContainerStyled>
 
-      { showQuestion &&
+      {showQuestion &&
         <GXBodyContainerStyled>
           <MediumWrapperStyled>
             <GXQuestionMonitorStyled>
-                <GWWordsContainerStyled>
+              <GWWordsContainerStyled>
                 {
-                  quiz.words.map( (word, idx)=>{
+                  quiz.words.map((word, idx) => {
                     return (
-                      <GX4AnswerStyled
+                      <GXAnswerStyled
                         key={`word-${word}`}
-                        onClick={()=>{
+                        onClick={() => {
                           onWordClick(word)
                         }}
                         className="centered"
                         isSelected={false}
                         isOk={okWords.includes(word)}
-                      >{word}</GX4AnswerStyled>
+                      >{word}</GXAnswerStyled>
                     )
                   })
                 }
-                </GWWordsContainerStyled>
+              </GWWordsContainerStyled>
             </GXQuestionMonitorStyled>
           </MediumWrapperStyled>
         </GXBodyContainerStyled>
@@ -129,14 +128,24 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
 
       <GXFootersContainerStyled>
         <MediumWrapperStyled>
-          <Timer />
-         { !showQuestion && <ButtonResolveStyled onClick={()=>{
-            onClickStart()
-          }}>{t('action_start')}</ButtonResolveStyled>}
-
-         { showQuestion && <ButtonResolveStyled onClick={()=>{
-            onClickResolve()
-          }}>{t('action_resolve')}</ButtonResolveStyled>}
+          <GWWordsControlPanelStyled>
+            
+            {!showQuestion && 
+              <ButtonResolveStyled 
+                onClick={() => {
+                  onClickStart()
+                }}
+              >{t('action_start')}
+              </ButtonResolveStyled>
+            }
+            {showQuestion &&
+              <ButtonResolveStyled onClick={() => {
+                onClickResolve()
+                }}
+              >{t('action_resolve')}
+              </ButtonResolveStyled>
+            }
+          </GWWordsControlPanelStyled>
         </MediumWrapperStyled>
       </GXFootersContainerStyled>
 

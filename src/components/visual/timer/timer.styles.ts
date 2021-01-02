@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 
-import {  TimerProps, } from "./timer.types";
-
-export const TimerStyled = styled.div`
-
-
+export const TimerStyled = styled.div<{color: string}>`
+  font-size:28px;
+  cursor: pointer;
+  color: ${   ({color = 'white'}) => color };
+  user-select: none;
 `;

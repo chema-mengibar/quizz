@@ -5,26 +5,24 @@ import {
 } from '~/components/layout/layout.index'
 import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
-import CoreService from '~/services/CoreService/CoreService';
-
 import {GXHeaderContainerStyled,
   GXBodyContainerStyled,
   GXContainerStyled,
   GXFootersContainerStyled,
   GXQuestionImageStyled,
-  GXQuestionMonitorStyled
-} from '../shared/games.styles'
+  GXQuestionMonitorStyled,
+  GXAnswerStyled,
+  GXAnswerKeyStyled,
+} from '~/components/games/shared/games.styles'
+
 import {
   GX4QuestionStyled,
   CopyQestionStyled,
   GX4AnwersContainerStyled,
   GX4AnwerColumnStyled,
   GX4TimerColumnStyled,
-  GX4AnswerStyled,
-  GX4AnswerKeyStyled,
   GX4TimerStyled,
   GX4TimerCounterStyled,
-
 } from "./game-x4.styles";
 import { GameX4Props, } from "./game-x4.types";
 
@@ -118,7 +116,7 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
             <GX4AnwerColumnStyled>
               {
                 showOptions && solutionItemsLeft.map((item, idx) => {
-                  return (<GX4AnswerStyled
+                  return (<GXAnswerStyled
                     className={`delay_0-${idx}`}
                     key={`gx4-option-${item.key}`}
                     isSelected={selectedOptionKey === item.key}
@@ -126,9 +124,9 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
                     onClick={() => {
                       onClickOption(item.key)
                     }}>
-                    <GX4AnswerKeyStyled>{item.key}</GX4AnswerKeyStyled>
+                    <GXAnswerKeyStyled>{item.key}</GXAnswerKeyStyled>
                     <p>{item.value}</p>
-                  </GX4AnswerStyled>)
+                  </GXAnswerStyled>)
                 })
               }
             </GX4AnwerColumnStyled>
@@ -143,7 +141,7 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
             <GX4AnwerColumnStyled>
               {
                 showOptions && solutionItemsRight.map((item, idx) => {
-                  return (<GX4AnswerStyled
+                  return (<GXAnswerStyled
                     className={`delay_1-${idx}`}
                     key={`gx4-option-${item.key}`}
                     isSelected={selectedOptionKey === item.key}
@@ -151,9 +149,9 @@ const GameX4 = ({ dataCY, quiz }: GameX4Props): ReactElement => {
                     onClick={() => {
                       onClickOption(item.key)
                     }}>
-                    <GX4AnswerKeyStyled>{item.key}</GX4AnswerKeyStyled>
+                    <GXAnswerKeyStyled>{item.key}</GXAnswerKeyStyled>
                     <p>{item.value}</p>
-                  </GX4AnswerStyled>)
+                  </GXAnswerStyled>)
                 })
               }
             </GX4AnwerColumnStyled>

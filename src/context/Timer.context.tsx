@@ -15,6 +15,7 @@ const TimerContext = React.createContext<TimerContextProps | null>(null)
 
 const initialState: TimerState = {
   timeInSeconds: 0,
+  currentTime: 0,
   status: TimerStatus.ready
 };
 
@@ -27,8 +28,36 @@ let reducer = (state: any, action: any) => {
   const currentState = { ...state }
   switch (action.type) {
     case "setTime":
-      console.log( action.payload )
+      currentState.status = TimerStatus.ready
       currentState.timeInSeconds = action.payload
+      currentState.currentTime = action.payload
+      return currentState
+    case "dec":
+      if( currentState.status === TimerStatus.counting ){
+        currentState.currentTime = currentState.currentTime -1
+      }
+      return currentState
+    case "startTimer":
+      currentState.status = TimerStatus.start
+      return currentState
+    case "setStatusStart":
+      currentState.status = TimerStatus.start
+      return currentState
+    case "setStatusCounting":
+      currentState.status = TimerStatus.counting
+      return currentState
+    case "setStatusPause":
+      currentState.status = TimerStatus.pause
+      return currentState
+    case "setStatusEnd":
+      currentState.status = TimerStatus.end
+      return currentState
+    case "setStatusReady":
+      currentState.status = TimerStatus.ready
+      return currentState
+    case "reStart":
+      currentState.currentTime = currentState.timeInSeconds
+      currentState.status = TimerStatus.ready
       return currentState
     default:
       return state;

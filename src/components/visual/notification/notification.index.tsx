@@ -23,7 +23,9 @@ const Notification = (): ReactElement | null => {
 
   if (noty) {
     return (
-      <NotificationStyled data-cy="notification">
+      <NotificationStyled 
+        data-cy="notification"
+      >
         {gameContext.state.noty.type === NotyTypes.success &&
           <NotySuccessStyled>✔</NotySuccessStyled>
         }
