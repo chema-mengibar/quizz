@@ -2,4 +2,5 @@
 
 - index.html
 - app.js (build result)
-- static folder
+- ./static (from root)
+- favicon.png
