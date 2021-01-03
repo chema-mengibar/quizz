@@ -9,9 +9,8 @@ import { useTeamsContext } from '~/context/Teams.context'
 import { useGameContext } from '~/context/Game.context'
 
 import {
-  FrameGameStyled,
+  
   FrameLoadingStyled,
-  FrameIndicatorsStyled,
   NotificationLayerStyled
 } from '~/components/layout/layout.index'
 import GameX4 from '~/components/games/game-x4/game-x4.index'
@@ -30,9 +29,6 @@ const FrameGame = (): ReactElement => {
   const teamsContext = useTeamsContext()
 
   const core = CoreService.getInstance()
-
-  core.teamsService.initBuzzers(teamsContext)
-
 
   function loadCurrentQuiz() {
     gameContext.dispatch({ type: 'stepSetPrepare' })
@@ -53,7 +49,7 @@ const FrameGame = (): ReactElement => {
 
 
   return (
-    <FrameGameStyled>
+    <>
       {gameContext.state.current.step === GameSteps.prepare &&
         <FrameLoadingStyled>
           <GameLoading />
@@ -61,11 +57,6 @@ const FrameGame = (): ReactElement => {
       }
       {gameContext.state.current.step >= GameSteps.asking &&
         <>
-          <FrameIndicatorsStyled>
-            <TeamIndicator />
-            <BuzzerIndicator />
-          </FrameIndicatorsStyled>
-
           {quiz && quiz.type === GameTypes.x4 &&
             <GameX4 quiz={quiz} />
           }
@@ -82,7 +73,7 @@ const FrameGame = (): ReactElement => {
       </NotificationLayerStyled>}
 
 
-    </FrameGameStyled>
+    </>
   )
 };
 

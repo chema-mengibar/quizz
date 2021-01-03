@@ -39,7 +39,7 @@ const GameWords = ({ dataCY, quiz }: GameWordsProps): ReactElement => {
   const [showQuestion, setShowQuestion] = useState<boolean>(false)
 
   const points = 25;
-  const timeSeconds = 50;
+  const timeSeconds = 60;
 
   useEffect(() => {
     timerContext.dispatch({ type: 'setTime', payload: timeSeconds })

@@ -13,7 +13,7 @@ export default {
       registry: [] //RegistryX4
     },
     {
-      quizes: 1,
+      quizes: 2,
       mode: PlayModeTypes.single,
       turns: 3,
       registry: [] //RegistryWords

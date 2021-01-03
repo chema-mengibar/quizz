@@ -2,6 +2,7 @@ import React, { ReactElement, useState, useEffect } from 'react'
 
 import CoreService from '~/services/CoreService/CoreService'
 import { useTeamsContext } from '~/context/Teams.context'
+import TeamIndicator from '~/components/visual/team-indicator/team-indicator.index'
 
 import {
   FrameRankingStyled,
@@ -32,9 +33,14 @@ const FrameRanking = (): ReactElement => {
     return (teamPoints * 100)/maxPoints
   }
 
+  useEffect(()=>{
+    teamsContext.dispatch({type:'buzzerAllowed'})
+  },[teamsContext.state.current.buzzerAllowed])
+  
   return (
     <FrameRankingStyled>
       <FrameTitleStyled>{t('ranking_title')}</FrameTitleStyled>
+      <TeamIndicator />
       <RankContainerStyled>
         {
           teamsContext.state.teams.map((team, idx) => {

@@ -44,11 +44,9 @@ const initialState: TeamsState = {
   ]
 };
 
-
 export function useTeamsContext() {
   return React.useContext(TeamsContext)
 }
-
 
 let reducer = (state: any, action: any) => {
   const core = CoreService.getInstance()

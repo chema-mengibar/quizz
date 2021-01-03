@@ -1,8 +1,8 @@
 import React, { ReactElement, useState, useEffect } from 'react'
 import { useHistory  } from 'react-router-dom';
 
+import { useTeamsContext } from '~/context/Teams.context'
 import CoreService from '~/services/CoreService/CoreService'
-import Logo  from '~/components/ci/logo'
 
 import {
   FrameIntroStyled,
@@ -14,12 +14,12 @@ import {
 const FrameIntro = (): ReactElement => {
   
   const history = useHistory();
-
-  const core = CoreService.getInstance()
-  core.configService.initControlKeys( history )
-
+  const teamsContext = useTeamsContext()
   const {t} = CoreService
+  const core = CoreService.getInstance()
 
+  core.configService.initControlKeys( history )
+  core.teamsService.initBuzzers(teamsContext)
 
   function navigate( targetFrame: string ){
     history.push(targetFrame);

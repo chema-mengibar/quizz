@@ -16,6 +16,7 @@ import ReactCtxInit from '~/components/sandbox/react-ctx-init/react-ctx-init.ind
 import { LayoutBaseStyled, } from '~/components/layout/layout.index'
 import FrameIntro from '~/components/frames/frame-intro/frame-intro.index';
 import FrameGame from '~/components/frames/frame-game/frame-game.index';
+import FrameDev from '~/components/frames/frame-dev/frame-dev.index';
 import FrameRanking from '~/components/frames/frame-ranking/frame-ranking.index';
 
 // @ts-ignore
@@ -38,6 +39,7 @@ function App() {
         <LayoutBaseStyled>
           <ReactCtxInit />
           <Switch>
+            <Route path="/dev" component={FrameDev} />
             <Route path="/ranking" component={FrameRanking} />
             <Route path="/play" component={FrameGame} />
             <Route path="/" component={FrameIntro} />
