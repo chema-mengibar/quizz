@@ -7,10 +7,11 @@ export default {
   inject: ["$services"],
   data: () => ({
     t: {},
-    z: [],
     keys:[],
     answer_selected: undefined,
-    answer_right: undefined
+    answer_right: undefined,
+    cursor:0,
+    quizz: null
   }),
   methods: {
     setAnswerSeleted: function( letter ){
@@ -20,11 +21,11 @@ export default {
     onKey: function(e){
      const k = e.key;
 
-      if (['1', '2', '3', '4'].includes(k)) {
-        this.$services.toolService.flowQuestion = Number(k);
-      } 
+      // if (['1', '2', '3', '4'].includes(k)) {
+      //   this.$services.toolService.flowQuestion = Number(k);
+      // } 
 
-      else if(k === 't') { 
+      if(k === 't') { 
         const {query} = this.$route;
         this.$router.push({ path: '/teams', query })
       }
@@ -46,37 +47,49 @@ export default {
           this.keys.push(k)
         }
       }
-      
-
-      
+           
       if(this.$services.toolService.flowQuestion === 1) { 
-        this.keys.splice(0,this.keys.length);
-        this.answer_selected = undefined;
-        this.answer_right = undefined;
+        this.reset();
       }
-
-      
+ 
 
     },
-    next: function(e){
-      const {query} = this.$route;
-      const queryResult = this.$services.toolService.nextQuizz(query);
-      this.$router.push({query: queryResult})
+    showQuestion: function(){
+      this.$services.toolService.flowQuestion = 2
     },
+    // next: function(e){
+    //   // const {query} = this.$route;
+    //   // const queryResult = this.$services.toolService.nextQuizz(query);
+    //   // this.$router.push({query: queryResult})
+    // },
     resolve: function(){
       if(this.$services.toolService.flowQuestion === 3) { 
-        this.answer_right = 'C';
+        const op = this.quizz.options.find( option => option.solution === true)
+        this.answer_right = op.letter;
         this.$services.toolService.flowQuestion = 4;
 
-        if(true){
+        if(this.answer_right === this.answer_selected){
           const winnerKey = this.keys[0];
           this.$services.toolService.addPointsToTeamByKey(winnerKey);
+        }else{
+          //@todo: add/remove point to team
         }
-
-
-
-        //@todo: add/remove point to team
       }
+      else if(this.$services.toolService.flowQuestion === 4){
+        this.cursor++;
+        console.log(this.cursor);
+        this.quizz = this.$services.toolService.getQuizz(this.cursor);
+    
+        this.reset();
+      }
+    },
+    reset: function(){
+      this.$services.toolService.flowQuestion = 1;
+      this.answer_right = undefined;
+      this.answer_selected = undefined;
+      this.keys.splice(0,this.keys.length);
+      this.answer_selected = undefined;
+      this.answer_right = undefined;
     },
     isSelected( letter ) {
       return this.answer_selected === letter ? "selected" : ""
@@ -92,8 +105,15 @@ export default {
   mounted() {
    document.addEventListener('keydown', this.onKey)
     // /quizz?round=0&current=1&done=2&done=3&wait=4
-    const {query} = this.$route;
-    const queryResult = this.$services.toolService.updateFromRouter(query);
+
+    // const {query} = this.$route;
+    // const queryResult = this.$services.toolService.updateFromRouter(query);
+
+    this.$services.toolService.fetchQuizzes().then(resp=>{
+      console.log(resp)
+
+      this.quizz = resp[this.cursor]
+    });
   
   },
   unmounted(){
@@ -109,12 +129,14 @@ export default {
 @import "../styles/media";
 
 .question-container {
-  height: 50%;
+  padding: 2%;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   cursor:pointer;
+  height: 0;
+  flex: 1;
 }
 
 .prepare {
@@ -128,9 +150,11 @@ export default {
   font-style: normal;
   font-weight: 700;
   font-size: 56px;
+  cursor:pointer;
 }
 
-.question-text {
+.question {
+   user-select: none;
   background: radial-gradient(
       38.67% 81.16% at 50% 50%,
       #2841aa 2.08%,
@@ -142,8 +166,8 @@ export default {
   border-radius: 21px;
   margin: auto;
   display: flex;
-  flex-direction: column;
-  padding: 30px;
+  flex-direction: row;
+  padding: 2%;
   width: 90%;
   min-height: 50%;
   font-family: "Inter";
@@ -153,6 +177,19 @@ export default {
   line-height: 55px;
   text-align: center;
   color: #ffffff;
+  height: 100%;
+  gap: 30px;
+}
+
+.question-text{
+  display:flex;
+  align-items:center;
+}
+
+.question-image{
+   img{
+    height:fit-content;
+  }
 }
 
 
@@ -178,13 +215,14 @@ export default {
   height: 40%;
   display: flex;
   flex-wrap: wrap;
-  padding: 20px;
-  gap: 30px;
+  padding: 0 20px;
+  gap: 2%;
   flex-basis: fit-content;
   justify-content: space-between;
 }
 
 .answer {
+   user-select: none;
   background: radial-gradient(
     38.48% 50% at 50% 50%,
     #2841aa 2.08%,
@@ -257,52 +295,45 @@ export default {
     </div>
 
 
-    <div class="prepare" v-if="$services.toolService.flowQuestion === 1">
+    <div class="prepare" 
+      v-on:click="showQuestion()"
+      v-if="$services.toolService.flowQuestion === 1">
       Bereit?
     </div>
 
     <div class="question-container" 
       v-on:click="resolve()"
-      v-if="$services.toolService.flowQuestion > 1">
-      <div class="question-text">
-        Haben die Rockmusiker nach dem Auftritt Lust auf Pasta, dann isst die
-        ... ?
-        
+      v-if="quizz && $services.toolService.flowQuestion > 1">
+      <div class="question">
+        <div class="question-text">{{quizz.question}} </div>
+        <div class="question-image">
+         <img :src="'./assets/images/quizzes/' + quizz.image" />  
+        </div>
       </div>
+     
     </div>
-    <div class="answers-container" v-if="$services.toolService.flowQuestion > 1">
+    <div class="answers-container" v-if=" quizz && quizz.type.includes('4_') && $services.toolService.flowQuestion > 1">
       
-      <div class="answer" 
-      :class="[isSelected('A'),  isRight('A')]"
-        v-on:click="setAnswerSeleted('A')"
-        data-answer-letter="A">
-        <div class="answer-letter">A:</div>
-        <div class="answer-text">Eier Spätzle lorem ipsum</div>
+      <div 
+        class="answer" 
+        v-for="option in quizz.options" 
+        :key="option.letter"
+        :class="[isSelected(option.letter),  isRight(option.letter)]"
+        v-on:click="setAnswerSeleted(option.letter)"
+        >
+        <div class="answer-letter">{{option.letter}}:</div>
+        <div class="answer-text">{{option.text}}</div>
       </div>
 
-      <div class="answer" 
-      :class="[isSelected('B'), isRight('B')]"
-        v-on:click="setAnswerSeleted('B')"
-        data-answer-letter="B">
-        <div class="answer-letter">B:</div>
-        <div class="answer-text">Eier Spätzle</div>
-      </div>
-
-      <div class="answer" 
-      :class="[isSelected('C'), isRight('C')]"
-      v-on:click="setAnswerSeleted('C')"
-      data-answer-letter="C">
-        <div class="answer-letter">C:</div>
-        <div class="answer-text">Eier Spätzle temporavit desidera</div>
-      </div>
-
-      <div class="answer" 
-        :class="[isSelected('D'), isRight('D')]"
-        v-on:click="setAnswerSeleted('D')"
-        data-answer-letter="D">
-        <div class="answer-letter">D:</div>
-        <div class="answer-text">Eier Spätzle</div>
-      </div>
+     
     </div>
+
+    <div class="answers-container" v-if=" quizz && quizz.type.includes('1_') && $services.toolService.flowQuestion > 1">
+      
+        si o no
+     
+    </div>
+
+
   </div>
 </template>

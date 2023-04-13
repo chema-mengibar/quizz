@@ -1,4 +1,5 @@
 <script>
+
 export default {
   name: "Home",
   inject: ["$services"],
@@ -6,7 +7,12 @@ export default {
     t: {},
     z: [],
   }),
-  methods: {},
+  methods: {
+    next: function(e){
+     
+      this.$router.push({path: '/teams'})
+    },
+  },
   created() {
     const _ = this;
     _.t = this.$services.localeService.D();
@@ -30,14 +36,15 @@ export default {
   height: 100%;
   justify-content: center;
   align-items:center;
+  cursor:pointer;
 }
 
 </style>
 
 <template>
   <div class="layout-home">
-    <div class="logo-container">
-      <img src="assets/images/intro.svg" />
+    <div class="logo-container" v-on:click="next()" >
+      <img src="/assets/images/intro.svg" />
     </div>
   </div>
 </template>

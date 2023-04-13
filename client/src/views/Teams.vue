@@ -53,12 +53,28 @@ export default {
   gap: 30px;
 
   .team-bar {
-    border-bottom: 3px solid white;
+
     flex: 1;
     width: 25%;
     display: flex;
     align-items: flex-end;
     justify-content: center;
+
+    &.t1-c {
+      border-bottom: 3px solid var(--t1-color);
+    }
+
+    &.t2-c {
+      border-bottom: 3px solid var(--t2-color);
+    }
+
+    &.t3-c {
+      border-bottom: 3px solid var(--t3-color);
+    }
+
+    &.t4-c {
+      border-bottom: 3px solid var(--t4-color);
+    }
 
     .bar {
       width: 80%;
@@ -87,7 +103,7 @@ export default {
   <div class="layout-teams">
     <div class="bars-container" v-on:click="gotoQuizz()">
       <div class="teams-bars-row">
-        <div class="team-bar"  v-for="item in this.teams" :key="item.color">
+        <div class="team-bar" :class="'t'+ item.color + '-c'"  v-for="item in this.teams" :key="item.color">
           <div class="bar" 
             :class="'t'+ item.color + '-bg'"
             v-bind:style="{ height: $services.toolService.getTeamsProcent(item.points) + '%' }"></div>

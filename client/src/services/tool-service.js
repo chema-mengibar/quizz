@@ -1,4 +1,4 @@
-//import DemoJson from './sequences/demo.json'
+import localQuizzes from './quizzes/quizzes.js'
 import { toRaw, reactive } from "vue";
 
 
@@ -44,6 +44,8 @@ export default class ToolService {
 
     constructor() {}
 
+
+
     get flowQuestion() {
         return this.data.flowQuestion;
     }
@@ -53,8 +55,8 @@ export default class ToolService {
         this.data.flowQuestion = id;
     }
 
-    get quizz() {
-        return this.data.quizz;
+    getQuizz(idx) {
+        return this.data.quizzes[idx];
     }
 
     set quizz(q) {
@@ -83,22 +85,22 @@ export default class ToolService {
 
 
 
-    updateFromRouter(queryObj) {
-        console.log('[ToolService] updateFromRouter:', queryObj);
-        const queryMod = {
-            ...queryObj
-        }
-        return queryMod;
-    }
+    // updateFromRouter(queryObj) {
+    //     console.log('[ToolService] updateFromRouter:', queryObj);
+    //     const queryMod = {
+    //         ...queryObj
+    //     }
+    //     return queryMod;
+    // }
 
-    nextQuizz(queryObj) {
-        console.log('[ToolService] nextQuizz:', queryObj);
-        const queryMod = {
-            test: 'dos'
-        }
-        this.quizz = Date.now();
-        return queryMod;
-    }
+    // nextQuizz(queryObj) {
+    //     console.log('[ToolService] nextQuizz:', queryObj);
+    //     const queryMod = {
+    //         test: 'dos'
+    //     }
+    //     this.quizz = Date.now();
+    //     return queryMod;
+    // }
 
     getTeamsByPoints() {
         return this.teams.sort(
@@ -123,24 +125,28 @@ export default class ToolService {
     }
 
     async fetchQuizzes() {
-        return fetch(`${this.domain}/sequences.php`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then((res) => {
-                return res.json()
-            })
-            .then((jsonResponse) => {
-                if (jsonResponse.data) {
-                    this.data.quizzes = jsonResponse.data;
-                    return this.data.quizzes;
-                }
-            }, (error) => {
-                console.error('[ToolService] fetchSeqs:', error)
-            })
+
+        this.data.quizzes = localQuizzes;
+        return localQuizzes;
+
+        // return fetch(`${this.domain}/sequences.php`, {
+        //         method: 'GET',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //             'Content-Type': 'application/json',
+        //         },
+        //     })
+        //     .then((res) => {
+        //         return res.json()
+        //     })
+        //     .then((jsonResponse) => {
+        //         if (jsonResponse.data) {
+        //             this.data.quizzes = jsonResponse.data;
+        //             return this.data.quizzes;
+        //         }
+        //     }, (error) => {
+        //         console.error('[ToolService] fetchSeqs:', error)
+        //     })
     }
 
 
