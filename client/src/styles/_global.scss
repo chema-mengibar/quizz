@@ -1,0 +1,34 @@
+body {
+    font-family: var(--font-copy);
+    background: linear-gradient(108.98deg, #010071 1.27%, #045AD9 9.17%, #1C8DDC 15.96%, #0E55BF 20.17%, #020157 28.39%, #02025E 77.71%, #0349CA 90.09%, #40B9DF 102.51%);
+    ;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.t1-bg {
+    background-color: var(--t1-color);
+}
+
+.t2-bg {
+    background-color: var(--t2-color);
+}
+
+.t3-bg {
+    background-color: var(--t3-color);
+}
+
+.t4-bg {
+    background-color: var(--t4-color);
+}
