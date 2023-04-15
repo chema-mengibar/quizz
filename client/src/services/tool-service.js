@@ -2,9 +2,6 @@ import localQuizzes from './quizzes/quizzes.js'
 import { toRaw, reactive } from "vue";
 
 
-
-
-
 export default class ToolService {
 
     domain = '//drill-trainer-server.motuo.info'
@@ -30,8 +27,11 @@ export default class ToolService {
 
     data = reactive({
         quizzes: [],
-        quizz: 0,
-        flowQuestion: 1, // 1 prepare, 2 playing, 3 answered, 4 solution
+        quizz: null,
+        flowQuestion: 1, // 1 prepare, 2 playing, 3 answered, 4 solution,
+        programm_cursor: 0,
+        programm_quizz_cursor: 0,
+        program: [],
         teams: [
             { color: 1, points: 0, key: 'a' },
             { color: 2, points: 0, key: 's' },
@@ -41,8 +41,59 @@ export default class ToolService {
 
     })
 
+    get programmQuizzCursor() {
+        return this.data.programm_quizz_cursor;
+    }
 
-    constructor() {}
+    get quizz() {
+        return this.data.quizz;
+    }
+
+    get currentId() {
+        return this.data.program[this.data.programm_cursor].quizzes[this.data.programm_quizz_cursor]
+    }
+
+    loadQuizz() {
+        const currentId = this.currentId;
+        this.data.quizz = this.getQuizzById(currentId);
+        console.log('[toolService] quizz: ', toRaw(this.data.quizz))
+    }
+
+    saveToStore() {
+        localStorage.setItem("programm_cursor", this.data.programm_cursor);
+        localStorage.setItem("programm_quizz_cursor", this.data.programm_quizz_cursor);
+    }
+
+    readToStore() {
+        this.data.programm_cursor = parseInt(localStorage.getItem("programm_cursor"));
+        this.data.programm_quizz_cursor = parseInt(localStorage.getItem("programm_quizz_cursor"));
+        this.data.program = JSON.parse(localStorage.getItem("programm"));
+    }
+
+
+    incrementProgrammCursor() {
+        this.data.programm_quizz_cursor++;
+        this.loadQuizz()
+    }
+
+
+
+
+    getQuizz(idx) {
+        return this.data.quizzes[idx];
+    }
+
+    getQuizzById(id) {
+        console.log(toRaw(this.data.quizzes))
+        const found = this.data.quizzes.find((q) => {
+            return q.id === id
+        })
+
+        return found
+    }
+
+
+
 
 
 
@@ -55,13 +106,6 @@ export default class ToolService {
         this.data.flowQuestion = id;
     }
 
-    getQuizz(idx) {
-        return this.data.quizzes[idx];
-    }
-
-    set quizz(q) {
-        this.data.quizz = q;
-    }
 
 
     get teamsKeys() {
@@ -82,25 +126,6 @@ export default class ToolService {
     }
 
 
-
-
-
-    // updateFromRouter(queryObj) {
-    //     console.log('[ToolService] updateFromRouter:', queryObj);
-    //     const queryMod = {
-    //         ...queryObj
-    //     }
-    //     return queryMod;
-    // }
-
-    // nextQuizz(queryObj) {
-    //     console.log('[ToolService] nextQuizz:', queryObj);
-    //     const queryMod = {
-    //         test: 'dos'
-    //     }
-    //     this.quizz = Date.now();
-    //     return queryMod;
-    // }
 
     getTeamsByPoints() {
         return this.teams.sort(

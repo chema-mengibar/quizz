@@ -14,6 +14,12 @@ const routes = [{
             import ('../views/Quizz.vue'))
     },
     {
+        path: '/config',
+        name: 'Config',
+        component: () => (
+            import ('../views/Config.vue'))
+    },
+    {
         path: '/teams',
         name: 'Teams',
         component: () => (

@@ -13,18 +13,20 @@ import image4 from './4_image.js'
 const _image1 = image1.map(quizzItem => {
     return {
         ...quizzItem,
-        type: '1_image',
+        type: '1-image',
+        id: '1-image_' + quizzItem.id,
     }
 })
 
 const _image4 = image4.map(quizzItem => {
     return {
         ...quizzItem,
-        type: '4_image',
+        type: '4-image',
+        id: '4-image_' + quizzItem.id,
     }
 })
 
 export default [
     ..._image4,
-    //..._image1
+    ..._image1
 ]
